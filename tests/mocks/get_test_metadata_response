@@ -1,0 +1,355 @@
+{
+  "tests": [
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › App › AppReducer › action for TOGGLE_ADD_POST is working",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › App › AppActions › should return the correct type for toggleAddPost",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › App › AppReducer › getShowAddPost selector",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Intl › IntlReducer › action for SWITCH_LANGUAGE is working",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Intl › IntlActions › should return the correct type for switchLanguage",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › PostActions › should return the correct type for addPost",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › PostActions › should return the correct type for deletePost",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › PostActions › should return the correct type for addPosts",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › PostReducer › action for ADD_POST is working",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › PostReducer › action for DELETE_POST is working",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › PostReducer › action for ADD_POSTS is working",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › PostReducer › getPosts selector",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › PostReducer › getPost selector",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › App › Components › Footer › renders the footer properly",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › App › App › renders properly",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › components › PostCreateWidget › renders properly",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › components › PostListItem › renders properly",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › components › PostList › renders the list",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › App › Components › Header › renders the header properly",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › App › Components › Header › doesn't add post in pages other than home",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › App › Components › Header › toggleAddPost called properly",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › components › PostListItem › has correct props",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › components › PostCreateWidget › hide when showAddPost is false",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › components › PostListItem › calls onDelete",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › components › PostCreateWidget › has correct props",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › components › PostCreateWidget › calls addPost",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › Post › components › PostCreateWidget › empty form doesn't call addPost",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › App › App › calls componentDidMount",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › modules › App › App › calling toggleAddPostSection dispatches toggleAddPost",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › util › apiCaller › method defaults to GET",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › util › apiCaller › sends the body",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "client › util › apiCaller › returns the error",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "server › models › post › Should send correct data when queried against a cuid",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "server › models › post › Should correctly add a post",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    },
+    {
+      "classname": "",
+      "file": null,
+      "name": "server › models › post › Should correctly delete a post",
+      "result": "success",
+      "run_time": 0,
+      "message": null,
+      "source": "unknown",
+      "source_type": "unknown"
+    }
+  ],
+  "exceptions": []
+}

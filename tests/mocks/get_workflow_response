@@ -1,0 +1,12 @@
+{
+  "created_at": "2019-04-16T20:46:51Z",
+  "id": "dummy-workflow-id",
+  "name": "dummy-workflow",
+  "pipeline_id": null,
+  "pipeline_number": null,
+  "project": {
+    "id": "dummy-project"
+  },
+  "status": "running",
+  "stopped_at": null
+}

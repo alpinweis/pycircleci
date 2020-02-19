@@ -1,0 +1,27 @@
+{
+  "workflows": {
+    "ids": [
+      "dummy-workflow-id"
+    ],
+    "total_count": 1
+  },
+  "id": "dummy-pipeline-id",
+  "errors": [],
+  "idempotency_key": "dummy-idempotency-key",
+  "project_slug": "gh/foo/bar",
+  "updated_at": "2019-07-01T12:34:56.123Z",
+  "number": 1234,
+  "state": "created",
+  "created_at": "2019-07-01T12:34:56.123Z",
+  "trigger": {
+    "type": "webhook",
+    "received_at": "2019-07-01T12:34:56.123Z"
+  },
+  "vcs": {
+    "provider_name": "GitHub",
+    "origin_repository_url": "https://github.com/foo/bar",
+    "target_repository_url": "https://github.com/foo/bar",
+    "revision": "12345",
+    "branch": "dummy"
+  }
+}

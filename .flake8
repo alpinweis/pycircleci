@@ -1,0 +1,15 @@
+[flake8]
+extend-ignore =
+    E501 # line length limit
+    E203 # see https://github.com/PyCQA/pycodestyle/issues/373
+exclude =
+    .git,
+    .mypy_cache,
+    .tox,
+    .venv,
+    __pycache__,
+    _build,
+    build,
+    dist,
+    temp,
+    vendor

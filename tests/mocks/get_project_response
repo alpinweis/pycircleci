@@ -1,0 +1,11 @@
+{
+  "slug": "gh/foo/bar",
+  "name": "bar",
+  "organization_name": "foo",
+  "vcs_info": {
+    "vcs_url": "https://github.com/foo/bar",
+    "provider": "GitHub",
+    "default_branch": "master"
+  },
+  "last_job_finish_time": "2019-07-01T12:34:56.123Z"
+}
