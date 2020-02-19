@@ -1,5 +1,8 @@
 # pycircleci
 
+[![PyPI version](https://badge.fury.io/py/pycircleci.svg)](https://badge.fury.io/py/pycircleci)
+[![Build Status](https://travis-ci.org/alpinweis/pycircleci.svg?branch=master)](https://travis-ci.org/alpinweis/pycircleci)
+
 Python client for [CircleCI API](https://circleci.com/docs/2.0/api-intro/).
 
 Based on the discontinued [circleci.py](https://github.com/levlaz/circleci.py) project.
