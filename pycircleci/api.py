@@ -13,7 +13,9 @@ API_BASE_URL = "https://circleci.com/api"
 API_VER_V1 = "v1.1"
 API_VER_V2 = "v2"
 
-DELETE, GET, POST, PUT = "DELETE", "GET", "POST", "PUT"
+GET, POST, PUT, DELETE = "GET", "POST", "PUT", "DELETE"
+
+GITHUB = "github"
 
 
 class CircleciError(Exception):
@@ -39,6 +41,14 @@ class Api:
         self.token = token
         self.url = url
         self._session = self._request_session()
+
+    def __repr__(self):
+        opts = {
+            "token": self.token,
+            "url": self.url,
+        }
+        kwargs = [f"{k}={v!r}" for k, v in opts.items()]
+        return f'Api({", ".join(kwargs)})'
 
     def get_user_info(self):
         """Get info about the signed in user.
@@ -70,12 +80,12 @@ class Api:
         resp = self._request(GET, endpoint)
         return resp
 
-    def follow_project(self, username, project, vcs_type="github"):
+    def follow_project(self, username, project, vcs_type=GITHUB):
         """Follow a project.
 
         :param username: Org or user name.
         :param project: Repo name.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             POST: ``/project/:vcs-type/:username/:project/follow``
@@ -96,7 +106,7 @@ class Api:
         offset=0,
         status_filter=None,
         branch=None,
-        vcs_type="github",
+        vcs_type=GITHUB,
         shallow=False,
     ):
         """Get build summary for each of the last 30 builds for a single repo.
@@ -109,7 +119,7 @@ class Api:
             Set to "completed", "successful", "running" or "failed".
             Defaults to None (no filter).
         :param branch: Restricts returned builds to a single branch.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
         :param shallow: Optional boolean value that may be sent to improve
             overall performance if set to "true".
 
@@ -172,13 +182,13 @@ class Api:
         resp = self._request(GET, endpoint)
         return resp
 
-    def get_build_info(self, username, project, build_num, vcs_type="github"):
+    def get_build_info(self, username, project, build_num, vcs_type=GITHUB):
         """Get full details of a single build.
 
         :param username: Org or user name.
         :param project: Repo name.
         :param build_num: Build number.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             GET: ``/project/:vcs-type/:username/:project/:build_num``
@@ -192,13 +202,13 @@ class Api:
         resp = self._request(GET, endpoint)
         return resp
 
-    def get_artifacts(self, username, project, build_num, vcs_type="github"):
+    def get_artifacts(self, username, project, build_num, vcs_type=GITHUB):
         """Get list of artifacts produced by a given build.
 
         :param username: Org or user name.
         :param project: Repo name.
         :param build_num: Build number.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             GET: ``/project/:vcs-type/:username/:project/:build_num/artifacts``
@@ -218,7 +228,7 @@ class Api:
         project,
         branch=None,
         status_filter="completed",
-        vcs_type="github",
+        vcs_type=GITHUB,
     ):
         """Get list of artifacts produced by the latest build on a given branch.
 
@@ -233,7 +243,7 @@ class Api:
             Returns artifacts for latest build in the entire project if omitted.
         :param filter: Restricts which builds are returned. defaults to "completed".
             Valid filters: "completed", "successful", "failed"
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             GET: ``/project/:vcs-type/:username/:project/latest/artifacts``
@@ -274,14 +284,14 @@ class Api:
         resp = self._download(url, destdir, filename)
         return resp
 
-    def retry_build(self, username, project, build_num, ssh=False, vcs_type="github"):
+    def retry_build(self, username, project, build_num, ssh=False, vcs_type=GITHUB):
         """Retries the build.
 
         :param username: Org or user name.
         :param project: Repo name.
         :param build_num: Build number.
         :param ssh: Retry a build with SSH enabled. Defaults to False.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         :type ssh: bool
 
@@ -306,13 +316,13 @@ class Api:
         resp = self._request(POST, endpoint)
         return resp
 
-    def cancel_build(self, username, project, build_num, vcs_type="github"):
+    def cancel_build(self, username, project, build_num, vcs_type=GITHUB):
         """Cancel a build.
 
         :param username: Org or user name.
         :param project: Repo name.
         :param build_num: Build number.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             POST: ``/project/:vcs-type/:username/:project/:build_num/cancel``
@@ -374,13 +384,13 @@ class Api:
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
-    def add_ssh_user(self, username, project, build_num, vcs_type="github"):
+    def add_ssh_user(self, username, project, build_num, vcs_type=GITHUB):
         """Adds a user to the build SSH permissions.
 
         :param username: Org or user name.
         :param project: Repo name.
         :param build_num: Build number.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             POST: ``/project/:vcs-type/:username/:project/:build_num/ssh-users``
@@ -403,7 +413,7 @@ class Api:
         tag=None,
         parallel=None,
         params=None,
-        vcs_type="github",
+        vcs_type=GITHUB,
     ):
         """Trigger a new build.
 
@@ -422,7 +432,7 @@ class Api:
         :param parallel: Number of containers to use to run the build.
             Defaults to None and the project default is used.
         :param params: Optional build parameters.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         :type params: dict
         :type parallel: int
@@ -449,7 +459,7 @@ class Api:
         resp = self._request(POST, endpoint, data=data)
         return resp
 
-    def add_ssh_key(self, username, project, ssh_key, vcs_type="github", hostname=None):
+    def add_ssh_key(self, username, project, ssh_key, vcs_type=GITHUB, hostname=None):
         """Create an SSH key.
 
         Used to access external systems that require SSH key-based authentication.
@@ -461,7 +471,7 @@ class Api:
         :param project: Repo name.
         :param branch: Branch name. Defaults to master.
         :param ssh_key: Private RSA key.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
         :param hostname: Optional hostname. If set, the key will only work
             for this hostname.
 
@@ -482,12 +492,12 @@ class Api:
         resp = self._request(POST, endpoint, data=params)
         return resp
 
-    def list_checkout_keys(self, username, project, vcs_type="github"):
+    def list_checkout_keys(self, username, project, vcs_type=GITHUB):
         """Get list of checkout keys for a project.
 
         :param username: Org or user name.
         :param project: Repo name.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             GET: ``project/:vcs-type/:username/:project/checkout-key``
@@ -501,14 +511,14 @@ class Api:
         resp = self._request(GET, endpoint)
         return resp
 
-    def create_checkout_key(self, username, project, key_type, vcs_type="github"):
+    def create_checkout_key(self, username, project, key_type, vcs_type=GITHUB):
         """Create a new checkout key for a project.
 
         :param username: Org or user name.
         :param project: Repo name.
         :param key_type: Type of key to create. Valid values are:
             "deploy-key" or "github-user-key"
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             POST: ``/project/:vcs-type/:username/:project/checkout-key``
@@ -529,13 +539,13 @@ class Api:
         resp = self._request(POST, endpoint, data=params)
         return resp
 
-    def get_checkout_key(self, username, project, fingerprint, vcs_type="github"):
+    def get_checkout_key(self, username, project, fingerprint, vcs_type=GITHUB):
         """Get a checkout key.
 
         :param username: Org or user name.
         :param project: Repo name.
         :param fingerprint: The fingerprint of the checkout key.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             GET: ``/project/:vcs-type/:username/:project/checkout-key/:fingerprint``
@@ -550,13 +560,13 @@ class Api:
         resp = self._request(GET, endpoint)
         return resp
 
-    def delete_checkout_key(self, username, project, fingerprint, vcs_type="github"):
+    def delete_checkout_key(self, username, project, fingerprint, vcs_type=GITHUB):
         """Delete a checkout key.
 
         :param username: Org or user name.
         :param project: Repo name.
         :param fingerprint: The fingerprint of the checkout key.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             DELETE: ``/project/:vcs-type/:username/:project/checkout-key/:fingerprint``
@@ -571,13 +581,13 @@ class Api:
         resp = self._request(DELETE, endpoint)
         return resp
 
-    def get_test_metadata(self, username, project, build_num, vcs_type="github"):
+    def get_test_metadata(self, username, project, build_num, vcs_type=GITHUB):
         """Get test metadata for a build.
 
         :param username: Org or user name.
         :param project: Repo name.
         :param build_num: Build number.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             GET: ``/project/:vcs-type/:username/:project/:build_num/tests``
@@ -592,12 +602,12 @@ class Api:
         resp = self._request(GET, endpoint)
         return resp
 
-    def list_envvars(self, username, project, vcs_type="github"):
+    def list_envvars(self, username, project, vcs_type=GITHUB):
         """Get list of environment variables for a project.
 
         :param username: Org or user name.
         :param project: Repo name.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             GET: ``/project/:vcs-type/:username/:project/envvar``
@@ -611,14 +621,14 @@ class Api:
         resp = self._request(GET, endpoint)
         return resp
 
-    def add_envvar(self, username, project, name, value, vcs_type="github"):
+    def add_envvar(self, username, project, name, value, vcs_type=GITHUB):
         """Add an environment variable to project.
 
         :param username: Org or user name.
         :param project: Repo name.
         :param name: Name of the environment variable.
         :param value: Value of the environment variable.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             POST: ``/project/:vcs-type/:username/:project/envvar``
@@ -637,13 +647,13 @@ class Api:
         resp = self._request(POST, endpoint, data=params)
         return resp
 
-    def get_envvar(self, username, project, name, vcs_type="github"):
+    def get_envvar(self, username, project, name, vcs_type=GITHUB):
         """Get the hidden value of an environment variable.
 
         :param username: Org or user name.
         :param project: Repo name.
         :param name: Name of the environment variable.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             GET ``/project/:vcs-type/:username/:project/envvar/:name``
@@ -658,13 +668,13 @@ class Api:
         resp = self._request(GET, endpoint)
         return resp
 
-    def delete_envvar(self, username, project, name, vcs_type="github"):
+    def delete_envvar(self, username, project, name, vcs_type=GITHUB):
         """Delete an environment variable.
 
         :param username: Org or user name.
         :param project: Repo name.
         :param name: Name of the environment variable.
-        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
             DELETE ``/project/:vcs-type/:username/:project/envvar/:name``
@@ -677,6 +687,48 @@ class Api:
         )
 
         resp = self._request(DELETE, endpoint)
+        return resp
+
+    def get_project_settings(self, username, project, vcs_type=GITHUB):
+        """Get project advanced settings.
+
+        :param username: Org or user name.
+        :param project: Repo name.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+
+        Endpoint:
+            GET ``/project/:vcs-type/:username/:project/settings``
+        """
+        endpoint = "project/{0}/{1}/{2}/settings".format(
+            vcs_type,
+            username,
+            project,
+        )
+
+        resp = self._request(GET, endpoint)
+        return resp
+
+    def update_project_settings(self, username, project, settings, vcs_type=GITHUB):
+        """Update project advanced settings.
+
+        :param username: Org or user name.
+        :param project: Repo name.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+        :param settings: Settings to update.
+            Refer to mocks/get_project_settings_response for example settings.
+
+        :type settings: dict
+
+        Endpoint:
+            PUT ``/project/:vcs-type/:username/:project/settings``
+        """
+        endpoint = "project/{0}/{1}/{2}/settings".format(
+            vcs_type,
+            username,
+            project,
+        )
+
+        resp = self._request(PUT, endpoint, data=settings)
         return resp
 
     def _request_session(
@@ -723,7 +775,7 @@ class Api:
         :returns: A JSON object with the response from the API.
         """
 
-        verbs = [DELETE, GET, POST]
+        verbs = [GET, POST, PUT, DELETE]
 
         headers = {"Accept": "application/json"}
         auth = HTTPBasicAuth(self.token, "")
@@ -736,6 +788,8 @@ class Api:
             resp = self._session.get(request_url, auth=auth, headers=headers)
         elif verb == POST:
             resp = self._session.post(request_url, auth=auth, headers=headers, json=data)
+        elif verb == PUT:
+            resp = self._session.put(request_url, auth=auth, headers=headers, json=data)
         elif verb == DELETE:
             resp = self._session.delete(request_url, auth=auth, headers=headers)
         else:
