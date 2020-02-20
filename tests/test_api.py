@@ -226,3 +226,9 @@ class TestCircleciApi(unittest.TestCase):
             self.c.get_latest_artifact("user", "circleci-sandbox", "master", "bad")
 
         self.assertIn("Invalid status: bad", str(e.exception))
+
+    def test_get_project_settings(self):
+        self.get_mock('get_project_settings_response')
+        resp = js(self.c.get_project_settings("user", "circleci-sandbox"))
+
+        self.assertEqual(resp["default_branch"], "master")
