@@ -122,6 +122,12 @@ class TestCircleciApi(unittest.TestCase):
 
         self.assertEqual(resp["reponame"], "MOCK+testing")
 
+    def test_get_pipelines(self):
+        self.get_mock("get_pipelines_response")
+        resp = js(self.c.get_pipelines("user", "project", "github"))
+
+        self.assertEqual(resp["items"][0]["state"], "created")
+
     def test_get_pipeline(self):
         self.get_mock("get_pipeline_response")
         resp = js(self.c.get_pipeline("dummy-pipeline-id"))

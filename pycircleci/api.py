@@ -336,6 +336,24 @@ class Api:
         resp = self._request(POST, endpoint)
         return resp
 
+    def get_pipelines(self, username, project, vcs_type=GITHUB):
+        """Get all pipelines configured for project.
+
+        :param username: Org or user name.
+        :param project: Repo name.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+
+        Endpoint:
+            GET: ``/project/:vcs-type/:username/:project/pipeline``
+        """
+        endpoint = "project/{0}/{1}/{2}/pipeline".format(
+            vcs_type,
+            username,
+            project,
+        )
+        resp = self._request(GET, endpoint, api_version=API_VER_V2)
+        return resp
+
     def get_pipeline(self, pipeline_id):
         """Get full details of a given pipeline.
 
