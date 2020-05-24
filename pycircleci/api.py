@@ -63,6 +63,8 @@ class Api:
     def get_project(self, slug):
         """Get a project by its unique slug.
 
+        :param slug: Project slug.
+
         Endpoint:
             GET: ``/project/:slug``
         """
@@ -336,6 +338,40 @@ class Api:
         resp = self._request(POST, endpoint)
         return resp
 
+    def get_project_pipelines(self, username, project, vcs_type=GITHUB):
+        """Get all pipelines configured for a project.
+
+        :param username: Org or user name.
+        :param project: Repo name.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+
+        Endpoint:
+            GET ``/project/:vcs-type/:username/:project/pipeline``
+        """
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/pipeline".format(slug)
+        resp = self._request(GET, endpoint, api_version=API_VER_V2)
+        return resp
+
+    def get_project_pipeline(self, username, project, pipeline_num, vcs_type=GITHUB):
+        """Get full details of a given project pipeline by pipeline number.
+
+        :param username: Org or user name.
+        :param project: Repo name.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+        :param pipeline_num: Pipeline number
+
+        Endpoint:
+            GET ``/project/:vcs-type/:username/:project/pipeline/:number``
+        """
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/pipeline/{1}".format(
+            slug,
+            pipeline_num,
+        )
+        resp = self._request(GET, endpoint, api_version=API_VER_V2)
+        return resp
+
     def get_pipeline(self, pipeline_id):
         """Get full details of a given pipeline.
 
@@ -357,6 +393,18 @@ class Api:
             GET: ``/pipeline/:id/config``
         """
         endpoint = "pipeline/{0}/config".format(pipeline_id)
+        resp = self._request(GET, endpoint, api_version=API_VER_V2)
+        return resp
+
+    def get_pipeline_workflow(self, pipeline_id):
+        """Get the workflow of a given pipeline.
+
+        :param pipeline_id: Pipieline ID.
+
+        Endpoint:
+            GET: ``/pipeline/:id/workflow``
+        """
+        endpoint = "pipeline/{0}/workflow".format(pipeline_id)
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -428,7 +476,7 @@ class Api:
             Defaults to None and the head of the branch is used.
             Cannot be used with the ``tag`` parameter.
         :param tag: The git tag to build.
-            Defaults to None. Cannot be used with the ``tag`` parameter.
+            Defaults to None. Cannot be used with the ``revision`` parameter.
         :param parallel: Number of containers to use to run the build.
             Defaults to None and the project default is used.
         :param params: Optional build parameters.
@@ -457,6 +505,48 @@ class Api:
         )
 
         resp = self._request(POST, endpoint, data=data)
+        return resp
+
+    def trigger_pipeline(
+        self,
+        username,
+        project,
+        branch=None,
+        tag=None,
+        params=None,
+        vcs_type=GITHUB,
+    ):
+        """Trigger a new pipeline.
+
+        .. note::
+            * ``tag`` and ``branch`` are mutually exclusive.
+
+        :param username: Organization or user name.
+        :param project: Repo name.
+        :param branch: The branch to build.
+            Defaults to None. Cannot be used with the ``tag`` parameter.
+        :param tag: The git tag to build.
+            Defaults to None. Cannot be used with the ``branch`` parameter.
+        :param params: Optional build parameters.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+
+        :type params: dict
+
+        Endpoint:
+            POST ``/project/:vcs-type/:username/:project/pipeline``
+        """
+        data = {}
+        if branch:
+            data["branch"] = branch
+        elif tag:
+            data["tag"] = tag
+
+        if params:
+            data["parameters"] = params
+
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/pipeline".format(slug)
+        resp = self._request(POST, endpoint, data=data, api_version=API_VER_V2)
         return resp
 
     def add_ssh_key(self, username, project, ssh_key, vcs_type=GITHUB, hostname=None):
@@ -730,6 +820,96 @@ class Api:
 
         resp = self._request(PUT, endpoint, data=settings)
         return resp
+
+    def get_project_workflows_metrics(self, username, project, vcs_type=GITHUB):
+        """Get summary metrics for a project's workflows.
+
+        :param username: Org or user name.
+        :param project: Repo name.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+
+        Endpoint:
+            GET ``/insights/:vcs-type/:username/:project/workflows``
+        """
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "insights/{0}/workflows".format(slug)
+        resp = self._request(GET, endpoint, api_version=API_VER_V2)
+        return resp
+
+    def get_project_workflow_metrics(self, username, project, workflow_name, vcs_type=GITHUB):
+        """Get metrics of recent runs of a project workflow.
+
+        :param username: Org or user name.
+        :param project: Repo name.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+        :param workflow_name: Workflow name
+
+        Endpoint:
+            GET ``/project/:vcs-type/:username/:project/workflows/:name``
+        """
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "insights/{0}/workflows/{1}".format(
+            slug,
+            workflow_name,
+        )
+        resp = self._request(GET, endpoint, api_version=API_VER_V2)
+        return resp
+
+    def get_project_workflow_jobs_metrics(self, username, project, workflow_name, vcs_type=GITHUB):
+        """Get summary metrics for a project workflow's jobs.
+
+        :param username: Org or user name.
+        :param project: Repo name.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+        :param workflow_name: Workflow name
+
+        Endpoint:
+            GET ``/project/:vcs-type/:username/:project/workflows/:name/jobs``
+        """
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "insights/{0}/workflows/{1}/jobs".format(
+            slug,
+            workflow_name,
+        )
+        resp = self._request(GET, endpoint, api_version=API_VER_V2)
+        return resp
+
+    def get_project_workflow_job_metrics(self, username, project, workflow_name, job_name, vcs_type=GITHUB):
+        """Get metrics of recent runs of a project workflow job.
+
+        :param username: Org or user name.
+        :param project: Repo name.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+        :param workflow_name: Workflow name
+        :param job_name: Job name
+
+        Endpoint:
+            GET ``/project/:vcs-type/:username/:project/workflows/:name/jobs/:job-name``
+        """
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "insights/{0}/workflows/{1}/jobs/{2}".format(
+            slug,
+            workflow_name,
+            job_name,
+        )
+        resp = self._request(GET, endpoint, api_version=API_VER_V2)
+        return resp
+
+    def project_slug(self, username, reponame, vcs_type=GITHUB):
+        """Get project slug.
+
+        :param username: Org or user name.
+        :param reponame: Repo name.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+
+        Returns: triplet ``:vcs-type/:username/:reponame``
+        """
+        slug = "{0}/{1}/{2}".format(
+            vcs_type,
+            username,
+            reponame,
+        )
+        return slug
 
     def _request_session(
         self,

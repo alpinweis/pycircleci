@@ -1,0 +1,44 @@
+{
+  "next_page_token" : null,
+  "items" : [ {
+    "name" : "test",
+    "metrics" : {
+      "success_rate" : 1.0,
+      "total_runs" : 3,
+      "failed_runs" : 0,
+      "successful_runs" : 3,
+      "throughput" : 0.15789473684210525,
+      "duration_metrics" : {
+        "min" : 16,
+        "max" : 36,
+        "median" : 31,
+        "mean" : 28,
+        "p95" : 35,
+        "standard_deviation" : 10.0
+      },
+      "total_credits_used" : 10
+    },
+    "window_start" : "2020-03-11T19:42:26.191Z",
+    "window_end" : "2020-03-30T14:14:53.175Z"
+  }, {
+    "name" : "build",
+    "metrics" : {
+      "success_rate" : 1.0,
+      "total_runs" : 1,
+      "failed_runs" : 0,
+      "successful_runs" : 1,
+      "throughput" : 1.0,
+      "duration_metrics" : {
+        "min" : 130,
+        "max" : 130,
+        "median" : 130,
+        "mean" : 130,
+        "p95" : 130,
+        "standard_deviation" : 0.0
+      },
+      "total_credits_used" : 22
+    },
+    "window_start" : "2020-03-30T14:14:36.682Z",
+    "window_end" : "2020-03-30T14:16:47.436Z"
+  } ]
+}

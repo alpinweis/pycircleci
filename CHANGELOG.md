@@ -1,3 +1,7 @@
+### [0.3.0] - 2020-05-24
+* Add endpoints to get project pipelines (API v2)
+* Add endpoints to get project insights (API v2)
+
 ### [0.2.0] - 2020-02-20
 * Add endpoints to get/update project advanced settings
 

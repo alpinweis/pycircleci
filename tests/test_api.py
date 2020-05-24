@@ -122,6 +122,24 @@ class TestCircleciApi(unittest.TestCase):
 
         self.assertEqual(resp["reponame"], "MOCK+testing")
 
+    def test_trigger_pipeline(self):
+        self.get_mock("trigger_pipeline_response")
+        resp = js(self.c.trigger_pipeline("ccie-tester", "testing"))
+
+        self.assertEqual(resp["state"], "pending")
+
+    def test_get_project_pipelines(self):
+        self.get_mock("get_project_pipelines_response")
+        resp = js(self.c.get_project_pipelines("foo", "bar"))
+
+        self.assertEqual(resp["items"][0]["project_slug"], "gh/foo/bar")
+
+    def test_get_project_pipeline(self):
+        self.get_mock("get_project_pipeline_response")
+        resp = js(self.c.get_project_pipeline("foo", "bar", 1234))
+
+        self.assertEqual(resp["number"], 1234)
+
     def test_get_pipeline(self):
         self.get_mock("get_pipeline_response")
         resp = js(self.c.get_pipeline("dummy-pipeline-id"))
@@ -134,6 +152,12 @@ class TestCircleciApi(unittest.TestCase):
 
         self.assertIn("source", resp)
         self.assertIn("compiled", resp)
+
+    def test_get_pipeline_workflow(self):
+        self.get_mock("get_pipeline_workflow_response")
+        resp = js(self.c.get_pipeline_workflow("dummy-pipeline-id"))
+
+        self.assertEqual(resp["items"][0]["project_slug"], "gh/foo/bar")
 
     def test_get_workflow(self):
         self.get_mock("get_workflow_response")
@@ -228,7 +252,35 @@ class TestCircleciApi(unittest.TestCase):
         self.assertIn("Invalid status: bad", str(e.exception))
 
     def test_get_project_settings(self):
-        self.get_mock('get_project_settings_response')
+        self.get_mock("get_project_settings_response")
         resp = js(self.c.get_project_settings("user", "circleci-sandbox"))
 
         self.assertEqual(resp["default_branch"], "master")
+
+    def test_get_project_workflows_metrics(self):
+        self.get_mock("get_project_workflows_metrics_response")
+        resp = js(self.c.get_project_workflows_metrics("foo", "bar"))
+
+        self.assertIn("metrics", resp["items"][0])
+        self.assertIn("duration_metrics", resp["items"][0]["metrics"])
+
+    def test_get_project_workflow_metrics(self):
+        self.get_mock("get_project_workflow_metrics_response")
+        resp = js(self.c.get_project_workflow_metrics("foo", "bar", "workflow"))
+
+        self.assertEqual(resp["items"][0]["status"], "success")
+        self.assertIn("duration", resp["items"][0])
+
+    def test_get_project_workflow_jobs_metrics(self):
+        self.get_mock("get_project_workflow_jobs_metrics_response")
+        resp = js(self.c.get_project_workflow_jobs_metrics("foo", "bar", "workflow"))
+
+        self.assertIn("metrics", resp["items"][0])
+        self.assertIn("duration_metrics", resp["items"][0]["metrics"])
+
+    def test_get_project_workflow_job_metrics(self):
+        self.get_mock("get_project_workflow_job_metrics_response")
+        resp = js(self.c.get_project_workflow_job_metrics("foo", "bar", "workflow", "job"))
+
+        self.assertEqual(resp["items"][0]["status"], "success")
+        self.assertIn("duration", resp["items"][0])
