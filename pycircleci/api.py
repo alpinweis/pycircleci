@@ -92,11 +92,8 @@ class Api:
         Endpoint:
             POST: ``/project/:vcs-type/:username/:project/follow``
         """
-        endpoint = "project/{0}/{1}/{2}/follow".format(
-            vcs_type,
-            username,
-            project
-        )
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/follow".format(slug)
         resp = self._request(POST, endpoint)
         return resp
 
@@ -139,11 +136,10 @@ class Api:
 
         _shallow = "&shallow=true" if shallow else ""
 
+        slug = self.project_slug(username, project, vcs_type)
         if branch:
-            endpoint = "project/{0}/{1}/{2}/tree/{3}?limit={4}&offset={5}&filter={6}{7}".format(
-                vcs_type,
-                username,
-                project,
+            endpoint = "project/{0}/tree/{1}?limit={2}&offset={3}&filter={4}{5}".format(
+                slug,
                 branch,
                 limit,
                 offset,
@@ -151,10 +147,8 @@ class Api:
                 _shallow,
             )
         else:
-            endpoint = "project/{0}/{1}/{2}?limit={3}&offset={4}&filter={5}{6}".format(
-                vcs_type,
-                username,
-                project,
+            endpoint = "project/{0}?limit={1}&offset={2}&filter={3}{4}".format(
+                slug,
                 limit,
                 offset,
                 status_filter,
@@ -195,10 +189,9 @@ class Api:
         Endpoint:
             GET: ``/project/:vcs-type/:username/:project/:build_num``
         """
-        endpoint = "project/{0}/{1}/{2}/{3}".format(
-            vcs_type,
-            username,
-            project,
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/{1}".format(
+            slug,
             build_num,
         )
         resp = self._request(GET, endpoint)
@@ -215,10 +208,9 @@ class Api:
         Endpoint:
             GET: ``/project/:vcs-type/:username/:project/:build_num/artifacts``
         """
-        endpoint = "project/{0}/{1}/{2}/{3}/artifacts".format(
-            vcs_type,
-            username,
-            project,
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/{1}/artifacts".format(
+            slug,
             build_num,
         )
         resp = self._request(GET, endpoint)
@@ -255,20 +247,17 @@ class Api:
         if status_filter not in valid_filters:
             raise CircleciError("Invalid status: {}. Valid values are: {}".format(status_filter, valid_filters))
 
+        slug = self.project_slug(username, project, vcs_type)
         # passing None returns a 404
         if branch:
-            endpoint = "project/{0}/{1}/{2}/latest/artifacts?branch={3}&filter={4}".format(
-                vcs_type,
-                username,
-                project,
+            endpoint = "project/{0}/latest/artifacts?branch={1}&filter={2}".format(
+                slug,
                 branch,
                 status_filter,
             )
         else:
-            endpoint = "project/{0}/{1}/{2}/latest/artifacts?filter={3}".format(
-                vcs_type,
-                username,
-                project,
+            endpoint = "project/{0}/latest/artifacts?filter={1}".format(
+                slug,
                 status_filter,
             )
 
@@ -298,22 +287,15 @@ class Api:
         :type ssh: bool
 
         Endpoint:
-            POST: ``/project/:vcs-type/:username/:project/:build_num/retry``
+            POST: ``/project/:vcs-type/:username/:project/:build_num/{retry|ssh}``
         """
-        if ssh:
-            endpoint = "project/{0}/{1}/{2}/{3}/ssh".format(
-                vcs_type,
-                username,
-                project,
-                build_num,
-            )
-        else:
-            endpoint = "project/{0}/{1}/{2}/{3}/retry".format(
-                vcs_type,
-                username,
-                project,
-                build_num,
-            )
+        action = "ssh" if ssh else "retry"
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/{1}/{2}".format(
+            slug,
+            build_num,
+            action,
+        )
 
         resp = self._request(POST, endpoint)
         return resp
@@ -329,10 +311,9 @@ class Api:
         Endpoint:
             POST: ``/project/:vcs-type/:username/:project/:build_num/cancel``
         """
-        endpoint = "project/{0}/{1}/{2}/{3}/cancel".format(
-            vcs_type,
-            username,
-            project,
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/{1}/cancel".format(
+            slug,
             build_num,
         )
         resp = self._request(POST, endpoint)
@@ -443,10 +424,9 @@ class Api:
         Endpoint:
             POST: ``/project/:vcs-type/:username/:project/:build_num/ssh-users``
         """
-        endpoint = "project/{0}/{1}/{2}/{3}/ssh-users".format(
-            vcs_type,
-            username,
-            project,
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/{1}/ssh-users".format(
+            slug,
             build_num,
         )
         resp = self._request(POST, endpoint)
@@ -497,10 +477,9 @@ class Api:
         if params:
             data.update(params)
 
-        endpoint = "project/{0}/{1}/{2}/tree/{3}".format(
-            vcs_type,
-            username,
-            project,
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/tree/{1}".format(
+            slug,
             branch,
         )
 
@@ -568,11 +547,8 @@ class Api:
         Endpoint:
             POST: ``/project/:vcs-type/:username/:project/ssh-key``
         """
-        endpoint = "project/{0}/{1}/{2}/ssh-key".format(
-            vcs_type,
-            username,
-            project,
-        )
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/ssh-key".format(slug)
 
         params = {
             "hostname": hostname,
@@ -592,12 +568,8 @@ class Api:
         Endpoint:
             GET: ``project/:vcs-type/:username/:project/checkout-key``
         """
-        endpoint = "project/{0}/{1}/{2}/checkout-key".format(
-            vcs_type,
-            username,
-            project,
-        )
-
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/checkout-key".format(slug)
         resp = self._request(GET, endpoint)
         return resp
 
@@ -620,12 +592,8 @@ class Api:
 
         params = {"type": key_type}
 
-        endpoint = "project/{0}/{1}/{2}/checkout-key".format(
-            vcs_type,
-            username,
-            project,
-        )
-
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/checkout-key".format(slug)
         resp = self._request(POST, endpoint, data=params)
         return resp
 
@@ -640,10 +608,9 @@ class Api:
         Endpoint:
             GET: ``/project/:vcs-type/:username/:project/checkout-key/:fingerprint``
         """
-        endpoint = "project/{0}/{1}/{2}/checkout-key/{3}".format(
-            vcs_type,
-            username,
-            project,
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/checkout-key/{1}".format(
+            slug,
             fingerprint,
         )
 
@@ -661,10 +628,9 @@ class Api:
         Endpoint:
             DELETE: ``/project/:vcs-type/:username/:project/checkout-key/:fingerprint``
         """
-        endpoint = "project/{0}/{1}/{2}/checkout-key/{3}".format(
-            vcs_type,
-            username,
-            project,
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/checkout-key/{1}".format(
+            slug,
             fingerprint,
         )
 
@@ -682,10 +648,9 @@ class Api:
         Endpoint:
             GET: ``/project/:vcs-type/:username/:project/:build_num/tests``
         """
-        endpoint = "project/{0}/{1}/{2}/{3}/tests".format(
-            vcs_type,
-            username,
-            project,
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/{1}/tests".format(
+            slug,
             build_num,
         )
 
@@ -702,12 +667,8 @@ class Api:
         Endpoint:
             GET: ``/project/:vcs-type/:username/:project/envvar``
         """
-        endpoint = "project/{0}/{1}/{2}/envvar".format(
-            vcs_type,
-            username,
-            project,
-        )
-
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/envvar".format(slug)
         resp = self._request(GET, endpoint)
         return resp
 
@@ -728,12 +689,8 @@ class Api:
             "value": value,
         }
 
-        endpoint = "project/{0}/{1}/{2}/envvar".format(
-            vcs_type,
-            username,
-            project
-        )
-
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/envvar".format(slug)
         resp = self._request(POST, endpoint, data=params)
         return resp
 
@@ -748,10 +705,9 @@ class Api:
         Endpoint:
             GET ``/project/:vcs-type/:username/:project/envvar/:name``
         """
-        endpoint = "project/{0}/{1}/{2}/envvar/{3}".format(
-            vcs_type,
-            username,
-            project,
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/envvar/{1}".format(
+            slug,
             name,
         )
 
@@ -769,10 +725,9 @@ class Api:
         Endpoint:
             DELETE ``/project/:vcs-type/:username/:project/envvar/:name``
         """
-        endpoint = "project/{0}/{1}/{2}/envvar/{3}".format(
-            vcs_type,
-            username,
-            project,
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/envvar/{1}".format(
+            slug,
             name,
         )
 
@@ -789,12 +744,8 @@ class Api:
         Endpoint:
             GET ``/project/:vcs-type/:username/:project/settings``
         """
-        endpoint = "project/{0}/{1}/{2}/settings".format(
-            vcs_type,
-            username,
-            project,
-        )
-
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/settings".format(slug)
         resp = self._request(GET, endpoint)
         return resp
 
@@ -812,12 +763,8 @@ class Api:
         Endpoint:
             PUT ``/project/:vcs-type/:username/:project/settings``
         """
-        endpoint = "project/{0}/{1}/{2}/settings".format(
-            vcs_type,
-            username,
-            project,
-        )
-
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{0}/settings".format(slug)
         resp = self._request(PUT, endpoint, data=settings)
         return resp
 
@@ -904,12 +851,20 @@ class Api:
 
         Returns: triplet ``:vcs-type/:username/:reponame``
         """
-        slug = "{0}/{1}/{2}".format(
-            vcs_type,
-            username,
-            reponame,
-        )
+        slug = "{0}/{1}/{2}".format(vcs_type, username, reponame)
         return slug
+
+    def split_slug(self, slug):
+        """Split project slug into components.
+
+        :param slug: Project slug.
+
+        Returns: tuple ``(:vcs_type, :username, :reponame)``
+        """
+        parts = slug.split("/")
+        if len(parts) != 3:
+            raise CircleciError("Invalid project slug: '{}'".format(slug))
+        return tuple(parts)
 
     def _request_session(
         self,
