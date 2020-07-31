@@ -29,7 +29,7 @@ class TestCircleciApi(unittest.TestCase):
         self.get_mock("approve_job_response")
         resp = js(self.c.approve_job("workflow_id", "approval_request_id"))
 
-        self.assertEqual(resp["message"], "approved")
+        self.assertEqual(resp["message"], "Accepted.")
 
     def test_get_user_info(self):
         self.get_mock("user_info_response")
