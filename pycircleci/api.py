@@ -50,23 +50,6 @@ class Api:
         kwargs = [f"{k}={v!r}" for k, v in opts.items()]
         return f'Api({", ".join(kwargs)})'
 
-    def approve_job(
-        self,
-        workflow_id,
-        approval_request_id
-    ):
-        """Approves a pending approval job in a workflow.
-
-        :param workflow_id: Workflow ID.
-        :param approval_request_id: The ID of the job being approved.
-
-        Endpoint:
-            POST ``/workflow/:workflow_id/approve/:approval_request_id``
-        """
-        endpoint = "workflow/{0}/approve/{1}".format(workflow_id, approval_request_id)
-        resp = self._request(POST, endpoint, api_version=API_VER_V2)
-        return resp
-
     def get_user_info(self):
         """Get info about the signed in user.
 
@@ -428,6 +411,19 @@ class Api:
         """
         endpoint = "workflow/{0}/job".format(workflow_id)
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
+        return resp
+
+    def approve_job(self, workflow_id, approval_request_id):
+        """Approves a pending approval job in a workflow.
+
+        :param workflow_id: Workflow ID.
+        :param approval_request_id: The ID of the job being approved.
+
+        Endpoint:
+            POST ``/workflow/:workflow_id/approve/:approval_request_id``
+        """
+        endpoint = "workflow/{0}/approve/{1}".format(workflow_id, approval_request_id)
+        resp = self._request(POST, endpoint, api_version=API_VER_V2)
         return resp
 
     def add_ssh_user(self, username, project, build_num, vcs_type=GITHUB):
