@@ -883,7 +883,7 @@ class Api:
         self,
         retries=3,
         backoff_factor=0.3,
-        status_forcelist=(408, 500, 502, 503, 504, 520, 521, 522, 523, 524),
+        status_forcelist=(408, 429, 500, 502, 503, 504, 520, 521, 522, 523, 524),
     ):
         """Get a session with Retry enabled.
 
