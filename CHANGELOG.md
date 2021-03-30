@@ -1,3 +1,6 @@
+### [0.3.2] - 2021-03-30
+* Add response code 429 to the list of HTTP status codes to force a retry on
+
 ### [0.3.1] - 2020-08-01
 * Add job approval endpoint (API v2)
 
