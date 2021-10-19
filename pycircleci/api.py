@@ -805,7 +805,7 @@ class Api:
         :param workflow_name: Workflow name
 
         Endpoint:
-            GET ``/project/:vcs-type/:username/:project/workflows/:name``
+            GET ``/insights/:vcs-type/:username/:project/workflows/:name``
         """
         slug = self.project_slug(username, project, vcs_type)
         endpoint = "insights/{0}/workflows/{1}".format(
@@ -824,7 +824,7 @@ class Api:
         :param workflow_name: Workflow name
 
         Endpoint:
-            GET ``/project/:vcs-type/:username/:project/workflows/:name/jobs``
+            GET ``/insights/:vcs-type/:username/:project/workflows/:name/jobs``
         """
         slug = self.project_slug(username, project, vcs_type)
         endpoint = "insights/{0}/workflows/{1}/jobs".format(
@@ -844,13 +844,32 @@ class Api:
         :param job_name: Job name
 
         Endpoint:
-            GET ``/project/:vcs-type/:username/:project/workflows/:name/jobs/:job-name``
+            GET ``/insights/:vcs-type/:username/:project/workflows/:name/jobs/:job-name``
         """
         slug = self.project_slug(username, project, vcs_type)
         endpoint = "insights/{0}/workflows/{1}/jobs/{2}".format(
             slug,
             workflow_name,
             job_name,
+        )
+        resp = self._request(GET, endpoint, api_version=API_VER_V2)
+        return resp
+    
+    def get_job_details(self, username, project, job_number, vcs_type=GITHUB):
+        """Returns job details.
+
+        :param username: Org or user name.
+        :param project: Repo name.
+        :param job_number: Job number
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+
+        Endpoint:
+            GET ``/project/:vcs-type/:username/:project/job/{job-number}``
+        """
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = "project/{}/job/{}".format(
+            slug,
+            job_number,
         )
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
