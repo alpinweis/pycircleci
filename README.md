@@ -37,7 +37,9 @@ Create a personal [API token](https://circleci.com/docs/2.0/managing-api-tokens/
 ### Contributing
 
 1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+1. Install dev dependencies (`pip install -r requirements-dev.txt`)
+1. Create your feature branch (`git checkout -b my-new-feature`)
+1. Make sure flake8 and the pytest test suite runs locally
+1. Commit your changes (`git commit -am 'Add some feature'`)
+1. Push to the branch (`git push origin my-new-feature`)
+1. Create new Pull Request
