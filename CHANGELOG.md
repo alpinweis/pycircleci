@@ -1,4 +1,5 @@
 ### [0.4.0] - 2021-11-06
+* Add context endpoints (API v2)
 * Add job details endpoint (API v2)
 * Add support for pagination: the results from endpoints that support pagination will come as a list rather than a list under `response["items"]`
 
