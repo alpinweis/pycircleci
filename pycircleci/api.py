@@ -326,8 +326,8 @@ class Api:
         :param username: Org or user name.
         :param project: Repo name.
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
-        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
+        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
 
         Endpoint:
             GET ``/project/:vcs-type/:username/:project/pipeline``
@@ -384,8 +384,8 @@ class Api:
         """Get the workflow of a given pipeline.
 
         :param pipeline_id: Pipieline ID.
-        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
+        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
 
         Endpoint:
             GET: ``/pipeline/:id/workflow``
@@ -410,8 +410,8 @@ class Api:
         """Get list of jobs of a given workflow.
 
         :param workflow_id: Workflow ID.
-        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
+        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
 
         Endpoint:
             GET: ``/workflow/:id/job``
@@ -755,19 +755,14 @@ class Api:
         return resp
 
     def get_contexts(self, username=None, owner_id=None, owner_type=ORGANIZATION, vcs_type=GITHUB, paginate=False, limit=None):
-        """Get (list) contexts for an organization
+        """Get contexts for an organization.
 
         :param username: Org or user name.
-        :param owner_id: UUID of owner (use either ``username`` or ``owner_id``)
+        :param owner_id: UUID of owner (use either ``username`` or ``owner_id``).
         :param owner_type: Either ``organization`` or ``account``. Defaults to ``organization``.
-        :param paginate: If True, repeatedly requests more items from the
-                         endpoint until the limit has been reached (or until
-                         all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return in this response. By
-                      default returns all the results from many calls to the
-                      endpoint, or all the results from a single call to the
-                      endpoint, depending on the value for 'paginate'.
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False..
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
 
         Endpoint:
             GET ``/v2/context?owner-slug=:vcs_type/:username``
@@ -784,10 +779,10 @@ class Api:
         return resp
 
     def add_context(self, name, username=None, owner_id=None, owner_type=ORGANIZATION, vcs_type=GITHUB):
-        """Add a new context (at org or account level)
+        """Add a new context at org or account level.
 
         :param name:  Context name to add.
-        :param owner_id: UUID of owner (use either ``username`` or ``owner_id``)
+        :param owner_id: UUID of owner (use either ``username`` or ``owner_id``).
         :param username: Org or user name.
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
@@ -806,9 +801,9 @@ class Api:
         return resp
 
     def get_context(self, context_id):
-        """Get a context (at org or account level)
+        """Get a context at org or account level.
 
-        :param context_id: UUID of context to get
+        :param context_id: UUID of context to get.
 
         Endpoint:
             GET ``/v2/context/:context_id``
@@ -819,9 +814,9 @@ class Api:
         return resp
 
     def delete_context(self, context_id):
-        """Delete a context (at org or account level)
+        """Delete a context at org or account level.
 
-        :param context_id: UUID of context to delete
+        :param context_id: UUID of context to delete.
 
         Endpoint:
             DELETE ``/v2/context/:context_id``
@@ -871,8 +866,8 @@ class Api:
         :param username: Org or user name.
         :param project: Repo name.
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
-        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
+        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
 
         Endpoint:
             GET ``/insights/:vcs-type/:username/:project/workflows``
@@ -889,8 +884,8 @@ class Api:
         :param project: Repo name.
         :param workflow_name: Workflow name
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
-        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
+        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
 
         Endpoint:
             GET ``/insights/:vcs-type/:username/:project/workflows/:name``
@@ -910,8 +905,8 @@ class Api:
         :param project: Repo name.
         :param workflow_name: Workflow name
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
-        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
+        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
 
         Endpoint:
             GET ``/insights/:vcs-type/:username/:project/workflows/:name/jobs``
@@ -932,8 +927,8 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
         :param workflow_name: Workflow name
         :param job_name: Job name
-        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
+        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
 
         Endpoint:
             GET ``/insights/:vcs-type/:username/:project/workflows/:name/jobs/:job-name``
@@ -976,7 +971,7 @@ class Api:
         return slug
 
     def owner_slug(self, username, vcs_type=GITHUB):
-        """Return owner slug as string
+        """Get owner slug.
 
         :param username: Org or user name.
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
@@ -1033,7 +1028,7 @@ class Api:
         :param verb: HTTP method. GET, POST or DELETE.
         :param endpoint: API endpoint to call.
         :param data: Optional POST data.
-        :param params: Optional query parameters to use for the call
+        :param params: Optional query parameters to use for the call.
         :param api_version: Optional API version to use. Defaults to v1.1
 
         :type data: dict
@@ -1054,7 +1049,7 @@ class Api:
         request_url = "{0}/{1}/{2}".format(self.url, api_version, endpoint)
 
         if verb == GET:
-            resp = self._session.get(request_url, auth=auth, headers=headers, params=params)
+            resp = self._session.get(request_url, params=params, auth=auth, headers=headers)
         elif verb == POST:
             resp = self._session.post(request_url, params=params, auth=auth, headers=headers, json=data)
         elif verb == PUT:
@@ -1071,8 +1066,8 @@ class Api:
         """Send one or more HTTP GET requests and depaginate the results, up to a limit.
 
         :param endpoint: API endpoint to GET.
-        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
+        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
         :param params: Optional query parameters.
 
         :type params: dict
