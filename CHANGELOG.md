@@ -1,3 +1,7 @@
+### [0.4.0] - 2021-11-06
+* Add job details endpoint (API v2)
+* Add support for pagination: the results from endpoints that support pagination will come as a list rather than a list under `response["items"]`
+
 ### [0.3.2] - 2021-03-30
 * Add response code 429 to the list of HTTP status codes to force a retry on
 

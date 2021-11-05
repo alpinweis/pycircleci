@@ -1,0 +1,39 @@
+{
+  "web_url": "https://circleci.com/gh/foo/bar/12345",
+  "project": {
+    "external_url": "https://github.com/foo/bar",
+    "slug": "gh/foo/bar",
+    "name": "bar"
+  },
+  "parallel_runs": [
+    {
+      "index": 0,
+      "status": "success"
+    }
+  ],
+  "started_at": "2021-11-05T21:40:24.565Z",
+  "latest_workflow": {
+    "name": "foobar-test",
+    "id": "f2dcf8f8-1234-4a63-bcd5-b1400c52f6a9"
+  },
+  "name": "foobar_test",
+  "executor": {
+    "resource_class": "medium",
+    "type": "docker"
+  },
+  "parallelism": 1,
+  "status": "success",
+  "number": 12345,
+  "pipeline": {
+    "id": "a0f452a4-1234-4a22-9806-b53cbf486b58"
+  },
+  "duration": 65359,
+  "created_at": "2021-11-05T21:40:21.312Z",
+  "messages": [],
+  "contexts": [],
+  "organization": {
+    "name": "foo"
+  },
+  "queued_at": "2021-11-05T21:40:21.385Z",
+  "stopped_at": "2021-11-05T21:41:29.924Z"
+}
