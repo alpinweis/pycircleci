@@ -326,14 +326,14 @@ class Api:
         :param project: Repo name.
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
         :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return in this response. By default returns all the results from many calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for 'paginate'.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
 
         Endpoint:
             GET ``/project/:vcs-type/:username/:project/pipeline``
         """
         slug = self.project_slug(username, project, vcs_type)
         endpoint = "project/{0}/pipeline".format(slug)
-        resp = self._request_get_with_depagination(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
         return resp
 
     def get_project_pipeline(self, username, project, pipeline_num, vcs_type=GITHUB):
@@ -384,13 +384,13 @@ class Api:
 
         :param pipeline_id: Pipieline ID.
         :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return in this response. By default returns all the results from many calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for 'paginate'.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
 
         Endpoint:
             GET: ``/pipeline/:id/workflow``
         """
         endpoint = "pipeline/{0}/workflow".format(pipeline_id)
-        resp = self._request_get_with_depagination(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
         return resp
 
     def get_workflow(self, workflow_id):
@@ -410,13 +410,13 @@ class Api:
 
         :param workflow_id: Workflow ID.
         :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return in this response. By default returns all the results from many calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for 'paginate'.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
 
         Endpoint:
             GET: ``/workflow/:id/job``
         """
         endpoint = "workflow/{0}/job".format(workflow_id)
-        resp = self._request_get_with_depagination(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
         return resp
 
     def approve_job(self, workflow_id, approval_request_id):
@@ -794,14 +794,14 @@ class Api:
         :param project: Repo name.
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
         :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return in this response. By default returns all the results from many calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for 'paginate'.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
 
         Endpoint:
             GET ``/insights/:vcs-type/:username/:project/workflows``
         """
         slug = self.project_slug(username, project, vcs_type)
         endpoint = "insights/{0}/workflows".format(slug)
-        resp = self._request_get_with_depagination(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
         return resp
 
     def get_project_workflow_metrics(self, username, project, workflow_name, vcs_type=GITHUB, paginate=False, limit=None):
@@ -812,7 +812,7 @@ class Api:
         :param workflow_name: Workflow name
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
         :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return in this response. By default returns all the results from many calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for 'paginate'.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
 
         Endpoint:
             GET ``/insights/:vcs-type/:username/:project/workflows/:name``
@@ -822,7 +822,7 @@ class Api:
             slug,
             workflow_name,
         )
-        resp = self._request_get_with_depagination(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
         return resp
 
     def get_project_workflow_jobs_metrics(self, username, project, workflow_name, vcs_type=GITHUB, paginate=False, limit=None):
@@ -833,7 +833,7 @@ class Api:
         :param workflow_name: Workflow name
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
         :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return in this response. By default returns all the results from many calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for 'paginate'.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
 
         Endpoint:
             GET ``/insights/:vcs-type/:username/:project/workflows/:name/jobs``
@@ -843,7 +843,7 @@ class Api:
             slug,
             workflow_name,
         )
-        resp = self._request_get_with_depagination(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
         return resp
 
     def get_project_workflow_job_metrics(self, username, project, workflow_name, job_name, vcs_type=GITHUB, paginate=False, limit=None):
@@ -855,7 +855,7 @@ class Api:
         :param workflow_name: Workflow name
         :param job_name: Job name
         :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return in this response. By default returns all the results from many calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for 'paginate'.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
 
         Endpoint:
             GET ``/insights/:vcs-type/:username/:project/workflows/:name/jobs/:job-name``
@@ -866,11 +866,11 @@ class Api:
             workflow_name,
             job_name,
         )
-        resp = self._request_get_with_depagination(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
         return resp
-    
+
     def get_job_details(self, username, project, job_number, vcs_type=GITHUB):
-        """Returns job details.
+        """Get job details.
 
         :param username: Org or user name.
         :param project: Repo name.
@@ -881,10 +881,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/job/{job-number}``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{}/job/{}".format(
-            slug,
-            job_number,
-        )
+        endpoint = "project/{0}/job/{1}".format(slug, job_number)
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -980,13 +977,13 @@ class Api:
 
         resp.raise_for_status()
         return resp.json()
-    
-    def _request_get_with_depagination(self, endpoint, paginate=False, limit=None, params=None, api_version=API_VER_V2):
-        """Send one or more 'GET' HTTP Request and depaginates the results, up to a limit.
 
-        :param endpoint: API endpoint to 'GET'.
+    def _request_get_depaginate(self, endpoint, paginate=False, limit=None, params=None, api_version=API_VER_V2):
+        """Send one or more HTTP GET requests and depaginate the results, up to a limit.
+
+        :param endpoint: API endpoint to GET.
         :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False
-        :param limit: Maximum number of items to return in this response. By default returns all the results from many calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for 'paginate'.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for "paginate".
         :param params: Optional query parameters.
 
         :type params: dict
@@ -1000,14 +997,14 @@ class Api:
 
             while True:
                 resp = self._request("GET", endpoint, params=params, api_version=api_version)
-                yield from resp['items']
-                returned_results += len(resp['items'])
+                yield from resp["items"]
+                returned_results += len(resp["items"])
 
                 if not paginate or not resp["next_page_token"] or (soft_limit is not None and returned_results >= soft_limit):
                     return
-                
+
                 params["page-token"] = resp["next_page_token"]
-        
+
         params = {} if params is None else params.copy()
 
         if api_version == API_VER_V2:
@@ -1016,8 +1013,6 @@ class Api:
             raise NotImplementedError("Unable to depaginate API version {} results".format(api_version))
 
         return results[:limit]
-        
-        
 
     def _download(self, url, destdir=None, filename=None):
         """Download a file.

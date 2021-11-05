@@ -17,7 +17,7 @@ class TestCircleciApi(unittest.TestCase):
         """Get a mock response from file"""
         filename = "tests/mocks/{0}".format(filename)
         with open(filename, "r") as f:
-            self.c._request = MagicMock(return_value=f.read())
+            self.c._request = self.c._request_get_depaginate = MagicMock(return_value=f.read())
 
     def test_bad_verb(self):
         with self.assertRaises(CircleciError) as e:
@@ -290,3 +290,10 @@ class TestCircleciApi(unittest.TestCase):
 
         self.assertEqual(resp["items"][0]["status"], "success")
         self.assertIn("duration", resp["items"][0])
+
+    def test_get_job_details(self):
+        self.get_mock("get_job_details_response")
+        resp = js(self.c.get_job_details("foo", "bar", 12345))
+
+        self.assertEqual(resp["project"]["slug"], "gh/foo/bar")
+        self.assertEqual(resp["number"], 12345)
