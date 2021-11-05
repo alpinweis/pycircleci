@@ -243,6 +243,117 @@ class TestCircleciApi(unittest.TestCase):
 
         self.assertEqual(resp["message"], "ok")
 
+    def test_get_contexts(self):
+        self.get_mock("get_contexts_response")
+        resp = js(self.c.get_contexts("user"))
+
+        self.c._request.assert_called_once_with(
+            "GET",
+            "context",
+            params={
+                "owner-type": "organization",
+                "owner-slug": "github/user",
+            },
+            api_version="v2",
+            paginate=False,
+            limit=None,
+        )
+        self.assertEqual(resp["items"][0]["name"], "context1")
+        self.assertEqual(resp["items"][2]["name"], "foobar")
+        self.assertEqual(resp["items"][0]["id"], "a2683f02-d716-4b1e-bb61-d8a5cf5308f1")
+
+    def test_get_contexts_owner_id(self):
+        self.get_mock("get_contexts_response")
+        resp = js(self.c.get_contexts(owner_id="c65b68ef-e73b-4bf2-be9a-7a322a9df150"))
+
+        self.c._request.assert_called_once_with(
+            "GET",
+            "context",
+            params={
+                "owner-type": "organization",
+                "owner-id": "c65b68ef-e73b-4bf2-be9a-7a322a9df150",
+            },
+            api_version="v2",
+            paginate=False,
+            limit=None,
+        )
+        self.assertEqual(resp["items"][0]["name"], "context1")
+
+    def test_get_contexts_owner_type(self):
+        self.get_mock("get_contexts_response")
+        resp = js(self.c.get_contexts("user", owner_type="account"))
+
+        self.c._request.assert_called_once_with(
+            "GET",
+            "context",
+            params={
+                "owner-type": "account",
+                "owner-slug": "github/user",
+            },
+            api_version="v2",
+            paginate=False,
+            limit=None,
+        )
+        self.assertEqual(resp["items"][0]["name"], "context1")
+
+    def test_add_context(self):
+        self.get_mock("add_context_response")
+        resp = js(self.c.add_context("testcontext", "user"))
+
+        self.c._request.assert_called_once_with(
+            "POST",
+            "context",
+            data={
+                "name": "testcontext",
+                "owner": {
+                    "type": "organization",
+                    "slug": "github/user",
+                }
+            },
+            api_version="v2",
+        )
+        self.assertEqual(resp["name"], "testcontext")
+
+    def test_add_context_organization(self):
+        self.get_mock("add_context_response")
+        resp = js(self.c.add_context("testcontext", "user", owner_type="account"))
+
+        self.c._request.assert_called_once_with(
+            "POST",
+            "context",
+            data={
+                "name": "testcontext",
+                "owner": {
+                    "type": "account",
+                    "slug": "github/user",
+                }
+            },
+            api_version="v2",
+        )
+        self.assertEqual(resp["name"], "testcontext")
+
+    def test_get_context(self):
+        self.get_mock("get_context_response")
+        resp = js(self.c.get_context("497f6eca-6276-4993-bfeb-53cbbbba6f08"))
+
+        self.c._request.assert_called_once_with(
+            "GET",
+            "context/497f6eca-6276-4993-bfeb-53cbbbba6f08",
+            api_version="v2",
+        )
+        self.assertEqual(resp["name"], "testcontext")
+
+    def test_delete_context(self):
+        self.get_mock("delete_context_response")
+        resp = js(self.c.delete_context("497f6eca-6276-4993-bfeb-53cbbbba6f08"))
+
+        self.c._request.assert_called_once_with(
+            "DELETE",
+            "context/497f6eca-6276-4993-bfeb-53cbbbba6f08",
+            api_version="v2",
+        )
+        self.assertEqual(resp["message"], "Context deleted.")
+
     def test_get_latest_artifact(self):
         self.get_mock("get_latest_artifacts_response")
         resp = js(self.c.get_latest_artifact("user", "circleci-sandbox"))

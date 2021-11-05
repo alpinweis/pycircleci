@@ -16,6 +16,7 @@ API_VER_V2 = "v2"
 GET, POST, PUT, DELETE = "GET", "POST", "PUT", "DELETE"
 
 GITHUB = "github"
+ORGANIZATION = "organization"
 
 
 class CircleciError(Exception):
@@ -753,6 +754,83 @@ class Api:
         resp = self._request(DELETE, endpoint)
         return resp
 
+    def get_contexts(self, username=None, owner_id=None, owner_type=ORGANIZATION, vcs_type=GITHUB, paginate=False, limit=None):
+        """Get (list) contexts for an organization
+
+        :param username: Org or user name.
+        :param owner_id: UUID of owner (use either ``username`` or ``owner_id``)
+        :param owner_type: Either ``organization`` or ``account``. Defaults to ``organization``.
+        :param paginate: If True, repeatedly requests more items from the
+                         endpoint until the limit has been reached (or until
+                         all results have been fetched). Defaults to False
+        :param limit: Maximum number of items to return in this response. By
+                      default returns all the results from many calls to the
+                      endpoint, or all the results from a single call to the
+                      endpoint, depending on the value for 'paginate'.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+
+        Endpoint:
+            GET ``/v2/context?owner-slug=:vcs_type/:username``
+        """
+
+        params = {"owner-type": owner_type}
+
+        if username:
+            params["owner-slug"] = self.owner_slug(username, vcs_type)
+        elif owner_id:
+            params["owner-id"] = owner_id
+
+        resp = self._request(GET, "context", params=params, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        return resp
+
+    def add_context(self, name, username=None, owner_id=None, owner_type=ORGANIZATION, vcs_type=GITHUB):
+        """Add a new context (at org or account level)
+
+        :param name:  Context name to add.
+        :param owner_id: UUID of owner (use either ``username`` or ``owner_id``)
+        :param username: Org or user name.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+
+        Endpoint:
+            POST ``/v2/context``
+        """
+        data = {"name": name}
+        data["owner"] = {"type": owner_type}
+
+        if username:
+            data["owner"]["slug"] = self.owner_slug(username, vcs_type)
+        elif owner_id:
+            data["owner"]["id"] = owner_id
+
+        resp = self._request(POST, "context", data=data, api_version=API_VER_V2)
+        return resp
+
+    def get_context(self, context_id):
+        """Get a context (at org or account level)
+
+        :param context_id: UUID of context to get
+
+        Endpoint:
+            GET ``/v2/context/:context_id``
+        """
+        endpoint = "context/{0}".format(context_id)
+
+        resp = self._request(GET, endpoint, api_version=API_VER_V2)
+        return resp
+
+    def delete_context(self, context_id):
+        """Delete a context (at org or account level)
+
+        :param context_id: UUID of context to delete
+
+        Endpoint:
+            DELETE ``/v2/context/:context_id``
+        """
+        endpoint = "context/{0}".format(context_id)
+
+        resp = self._request(DELETE, endpoint, api_version=API_VER_V2)
+        return resp
+
     def get_project_settings(self, username, project, vcs_type=GITHUB):
         """Get project advanced settings.
 
@@ -897,6 +975,17 @@ class Api:
         slug = "{0}/{1}/{2}".format(vcs_type, username, reponame)
         return slug
 
+    def owner_slug(self, username, vcs_type=GITHUB):
+        """Return owner slug as string
+
+        :param username: Org or user name.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+
+        Returns: string ``:vcs-type/:username"``
+        """
+        slug = "{0}/{1}".format(vcs_type, username)
+        return slug
+
     def split_slug(self, slug):
         """Split project slug into components.
 
@@ -944,7 +1033,7 @@ class Api:
         :param verb: HTTP method. GET, POST or DELETE.
         :param endpoint: API endpoint to call.
         :param data: Optional POST data.
-        :param params: Optional query parameters.
+        :param params: Optional query parameters to use for the call
         :param api_version: Optional API version to use. Defaults to v1.1
 
         :type data: dict
@@ -965,7 +1054,7 @@ class Api:
         request_url = "{0}/{1}/{2}".format(self.url, api_version, endpoint)
 
         if verb == GET:
-            resp = self._session.get(request_url, params=params, auth=auth, headers=headers)
+            resp = self._session.get(request_url, auth=auth, headers=headers, params=params)
         elif verb == POST:
             resp = self._session.post(request_url, params=params, auth=auth, headers=headers, json=data)
         elif verb == PUT:
