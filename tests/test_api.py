@@ -17,7 +17,9 @@ class TestCircleciApi(unittest.TestCase):
         """Get a mock response from file"""
         filename = "tests/mocks/{0}".format(filename)
         with open(filename, "r") as f:
-            self.c._request = self.c._request_get_depaginate = MagicMock(return_value=f.read())
+            mock_value = f.read()
+            self.c._request = MagicMock(return_value=mock_value)
+            self.c._request_get_depaginate = MagicMock(return_value=mock_value)
 
     def test_bad_verb(self):
         with self.assertRaises(CircleciError) as e:
@@ -247,8 +249,7 @@ class TestCircleciApi(unittest.TestCase):
         self.get_mock("get_contexts_response")
         resp = js(self.c.get_contexts("user"))
 
-        self.c._request.assert_called_once_with(
-            "GET",
+        self.c._request_get_depaginate.assert_called_once_with(
             "context",
             params={
                 "owner-type": "organization",
@@ -266,8 +267,7 @@ class TestCircleciApi(unittest.TestCase):
         self.get_mock("get_contexts_response")
         resp = js(self.c.get_contexts(owner_id="c65b68ef-e73b-4bf2-be9a-7a322a9df150"))
 
-        self.c._request.assert_called_once_with(
-            "GET",
+        self.c._request_get_depaginate.assert_called_once_with(
             "context",
             params={
                 "owner-type": "organization",
@@ -283,8 +283,7 @@ class TestCircleciApi(unittest.TestCase):
         self.get_mock("get_contexts_response")
         resp = js(self.c.get_contexts("user", owner_type="account"))
 
-        self.c._request.assert_called_once_with(
-            "GET",
+        self.c._request_get_depaginate.assert_called_once_with(
             "context",
             params={
                 "owner-type": "account",
@@ -353,6 +352,46 @@ class TestCircleciApi(unittest.TestCase):
             api_version="v2",
         )
         self.assertEqual(resp["message"], "Context deleted.")
+
+    def test_get_context_envvars(self):
+        self.get_mock("get_context_envvars_response")
+        resp = js(self.c.get_context_envvars("a5b6416b-369e-44a9-8d47-8970325d4134"))
+
+        self.c._request_get_depaginate.assert_called_once_with(
+            "context/a5b6416b-369e-44a9-8d47-8970325d4134/environment-variable",
+            api_version="v2",
+            paginate=False,
+            limit=None,
+        )
+        self.assertEqual(resp[1]["variable"], "FOOBAR")
+        self.assertEqual(resp[2]["variable"], "FOOBAR2")
+
+    def test_add_context_envvar(self):
+        self.get_mock("add_context_envvar_response")
+        resp = js(self.c.add_context_envvar(
+            "f31d7249-b7b1-4729-b3a4-ec0ba07b4686", "FOOBAR", "BAZ"
+        ))
+
+        self.c._request.assert_called_once_with(
+            "PUT",
+            "context/f31d7249-b7b1-4729-b3a4-ec0ba07b4686/environment-variable/FOOBAR",
+            api_version="v2",
+            data={"value": "BAZ"},
+        )
+        self.assertEqual(resp["variable"], "FOOBAR")
+
+    def test_delete_context_envvar(self):
+        self.get_mock("delete_context_envvar_response")
+        resp = js(self.c.delete_context_envvar(
+            "f31d7249-b7b1-4729-b3a4-ec0ba07b4686", "FOOBAR"
+        ))
+
+        self.c._request.assert_called_once_with(
+            "DELETE",
+            "context/f31d7249-b7b1-4729-b3a4-ec0ba07b4686/environment-variable/FOOBAR",
+            api_version="v2",
+        )
+        self.assertEqual(resp["message"], "Environment variable deleted.")
 
     def test_get_latest_artifact(self):
         self.get_mock("get_latest_artifacts_response")
