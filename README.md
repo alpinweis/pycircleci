@@ -1,7 +1,7 @@
 # pycircleci
 
 [![PyPI version](https://badge.fury.io/py/pycircleci.svg)](https://badge.fury.io/py/pycircleci)
-[![Build Status](https://travis-ci.org/alpinweis/pycircleci.svg?branch=master)](https://travis-ci.org/alpinweis/pycircleci)
+[![Build Status](https://github.com/alpinweis/pycircleci/actions/workflows/test.yml/badge.svg)](https://github.com/alpinweis/pycircleci/actions/workflows/test.yml)
 
 Python client for [CircleCI API](https://circleci.com/docs/2.0/api-intro/).
 
@@ -39,7 +39,7 @@ Create a personal [API token](https://circleci.com/docs/2.0/managing-api-tokens/
 1. Fork it
 1. Install dev dependencies (`pip install -r requirements-dev.txt`)
 1. Create your feature branch (`git checkout -b my-new-feature`)
-1. Make sure flake8 and the pytest test suite runs locally
+1. Make sure `flake8` and the `pytest` test suite successfully run locally
 1. Commit your changes (`git commit -am 'Add some feature'`)
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request

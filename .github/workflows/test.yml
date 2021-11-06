@@ -1,12 +1,7 @@
 ---
-name: Run flake8 and tests
+name: Test
 
-on:
-  pull_request:
-    types:
-      - opened
-      - edited
-      - synchronize
+on: [push, pull_request]
 
 jobs:
   build:
