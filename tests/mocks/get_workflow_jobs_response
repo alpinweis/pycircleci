@@ -1,25 +1,22 @@
-{
-  "next_page_token": null,
-  "items": [
-    {
-      "id": "1234",
-      "name": "job1",
-      "type": "build",
-      "status": "canceled",
-      "started_at": "2019-04-16T15:14:30Z",
-      "dependencies": [],
-      "job_number": 1,
-      "stopped_at": "2019-04-16T15:31:42Z"
-    },
-    {
-      "id": "2345",
-      "name": "job2",
-      "type": "build",
-      "status": "success",
-      "started_at": "2019-04-16T15:14:31Z",
-      "dependencies": [],
-      "job_number": 2,
-      "stopped_at": "2019-04-16T15:19:01Z"
-    }
-  ]
-}
+[
+  {
+    "id": "1234",
+    "name": "job1",
+    "type": "build",
+    "status": "canceled",
+    "started_at": "2019-04-16T15:14:30Z",
+    "dependencies": [],
+    "job_number": 1,
+    "stopped_at": "2019-04-16T15:31:42Z"
+  },
+  {
+    "id": "2345",
+    "name": "job2",
+    "type": "build",
+    "status": "success",
+    "started_at": "2019-04-16T15:14:31Z",
+    "dependencies": [],
+    "job_number": 2,
+    "stopped_at": "2019-04-16T15:19:01Z"
+  }
+]

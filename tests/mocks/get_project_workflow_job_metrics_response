@@ -1,11 +1,10 @@
-{
-  "next_page_token" : null,
-  "items" : [ {
+[
+  {
     "id" : "98db1f6d-91c0-4450-b7ae-3766ef217923",
     "started_at" : "2020-03-30T14:14:36.682Z",
     "stopped_at" : "2020-03-30T14:16:47.436Z",
     "duration" : 130,
     "status" : "success",
     "credits_used" : 22
-  } ]
-}
+  }
+]

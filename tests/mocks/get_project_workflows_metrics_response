@@ -1,6 +1,5 @@
-{
-  "next_page_token" : null,
-  "items" : [ {
+[
+  {
     "name" : "build-and-test",
     "metrics" : {
       "success_rate" : 1.0,
@@ -21,5 +20,5 @@
     },
     "window_start" : "2020-03-11T19:42:26.010Z",
     "window_end" : "2020-03-30T14:17:35.011Z"
-  } ]
-}
+  }
+]
