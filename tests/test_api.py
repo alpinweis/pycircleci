@@ -353,6 +353,46 @@ class TestCircleciApi(unittest.TestCase):
         )
         self.assertEqual(resp["message"], "Context deleted.")
 
+    def test_get_context_envvars(self):
+        self.get_mock("get_context_envvars_response")
+        resp = js(self.c.get_context_envvars("a5b6416b-369e-44a9-8d47-8970325d4134"))
+
+        self.c._request_get_depaginate.assert_called_once_with(
+            "context/a5b6416b-369e-44a9-8d47-8970325d4134/environment-variable",
+            api_version="v2",
+            paginate=False,
+            limit=None,
+        )
+        self.assertEqual(resp[1]["variable"], "FOOBAR")
+        self.assertEqual(resp[2]["variable"], "FOOBAR2")
+
+    def test_add_context_envvar(self):
+        self.get_mock("add_context_envvar_response")
+        resp = js(self.c.add_context_envvar(
+            "f31d7249-b7b1-4729-b3a4-ec0ba07b4686", "FOOBAR", "BAZ"
+        ))
+
+        self.c._request.assert_called_once_with(
+            "PUT",
+            "context/f31d7249-b7b1-4729-b3a4-ec0ba07b4686/environment-variable/FOOBAR",
+            api_version="v2",
+            data={"value": "BAZ"},
+        )
+        self.assertEqual(resp["variable"], "FOOBAR")
+
+    def test_delete_context_envvar(self):
+        self.get_mock("delete_context_envvar_response")
+        resp = js(self.c.delete_context_envvar(
+            "f31d7249-b7b1-4729-b3a4-ec0ba07b4686", "FOOBAR"
+        ))
+
+        self.c._request.assert_called_once_with(
+            "DELETE",
+            "context/f31d7249-b7b1-4729-b3a4-ec0ba07b4686/environment-variable/FOOBAR",
+            api_version="v2",
+        )
+        self.assertEqual(resp["message"], "Environment variable deleted.")
+
     def test_get_latest_artifact(self):
         self.get_mock("get_latest_artifacts_response")
         resp = js(self.c.get_latest_artifact("user", "circleci-sandbox"))

@@ -826,6 +826,51 @@ class Api:
         resp = self._request(DELETE, endpoint, api_version=API_VER_V2)
         return resp
 
+    def get_context_envvars(self, context_id, paginate=False, limit=None):
+        """Get environment variables for a context
+
+        :param context_id: ID of context to retrieve environment variables from
+        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False..
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
+
+        Endpoint:
+            GET ``/v2/context/:context_id/environment-variable``
+        """
+        endpoint = "context/{0}/environment-variable".format(context_id)
+
+        resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        return resp
+
+    def add_context_envvar(self, context_id, name, value):
+        """Add or update an environment variable to a context.
+
+        :param context_id: ID of the context to add environment variable to.
+        :param name: Name of the environment variable.
+        :param value: Value of the environment variable.
+
+        Endpoint:
+            PUT: ``/context/:context-id/environment-variable/:name``
+        """
+        data = {"value": value}
+        endpoint = "context/{0}/environment-variable/{1}".format(context_id, name)
+
+        resp = self._request(PUT, endpoint, api_version=API_VER_V2, data=data)
+        return resp
+
+    def delete_context_envvar(self, context_id, name):
+        """Delete an environment variable from a context.
+
+        :param context_id: ID of the context to delete environment variable from.
+        :param name: Name of the environment variable.
+
+        Endpoint:
+            DELETE: ``/context/:context-id/environment-variable/:name``
+        """
+        endpoint = "context/{0}/environment-variable/{1}".format(context_id, name)
+
+        resp = self._request(DELETE, endpoint, api_version=API_VER_V2)
+        return resp
+
     def get_project_settings(self, username, project, vcs_type=GITHUB):
         """Get project advanced settings.
 
