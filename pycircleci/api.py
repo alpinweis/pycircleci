@@ -775,7 +775,7 @@ class Api:
         elif owner_id:
             params["owner-id"] = owner_id
 
-        resp = self._request_get_depaginate(GET, "context", params=params, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_depaginate("context", params=params, api_version=API_VER_V2, paginate=paginate, limit=limit)
         return resp
 
     def add_context(self, name, username=None, owner_id=None, owner_type=ORGANIZATION, vcs_type=GITHUB):

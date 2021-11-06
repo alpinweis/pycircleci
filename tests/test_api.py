@@ -17,7 +17,9 @@ class TestCircleciApi(unittest.TestCase):
         """Get a mock response from file"""
         filename = "tests/mocks/{0}".format(filename)
         with open(filename, "r") as f:
-            self.c._request = self.c._request_get_depaginate = MagicMock(return_value=f.read())
+            mock_value = f.read()
+            self.c._request = MagicMock(return_value=mock_value)
+            self.c._request_get_depaginate = MagicMock(return_value=mock_value)
 
     def test_bad_verb(self):
         with self.assertRaises(CircleciError) as e:
@@ -247,8 +249,7 @@ class TestCircleciApi(unittest.TestCase):
         self.get_mock("get_contexts_response")
         resp = js(self.c.get_contexts("user"))
 
-        self.c._request.assert_called_once_with(
-            "GET",
+        self.c._request_get_depaginate.assert_called_once_with(
             "context",
             params={
                 "owner-type": "organization",
@@ -266,8 +267,7 @@ class TestCircleciApi(unittest.TestCase):
         self.get_mock("get_contexts_response")
         resp = js(self.c.get_contexts(owner_id="c65b68ef-e73b-4bf2-be9a-7a322a9df150"))
 
-        self.c._request.assert_called_once_with(
-            "GET",
+        self.c._request_get_depaginate.assert_called_once_with(
             "context",
             params={
                 "owner-type": "organization",
@@ -283,8 +283,7 @@ class TestCircleciApi(unittest.TestCase):
         self.get_mock("get_contexts_response")
         resp = js(self.c.get_contexts("user", owner_type="account"))
 
-        self.c._request.assert_called_once_with(
-            "GET",
+        self.c._request_get_depaginate.assert_called_once_with(
             "context",
             params={
                 "owner-type": "account",
