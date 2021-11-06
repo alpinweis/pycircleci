@@ -44,10 +44,7 @@ class Api:
         self._session = self._request_session()
 
     def __repr__(self):
-        opts = {
-            "token": self.token,
-            "url": self.url,
-        }
+        opts = {"token": self.token, "url": self.url}
         kwargs = [f"{k}={v!r}" for k, v in opts.items()]
         return f'Api({", ".join(kwargs)})'
 
@@ -55,7 +52,7 @@ class Api:
         """Get info about the signed in user.
 
         Endpoint:
-            GET: ``/me``
+            GET ``/me``
         """
         endpoint = "me"
         resp = self._request(GET, endpoint)
@@ -67,7 +64,7 @@ class Api:
         :param slug: Project slug.
 
         Endpoint:
-            GET: ``/project/:slug``
+            GET ``/project/:slug``
         """
         endpoint = "project/{0}".format(slug)
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
@@ -77,7 +74,7 @@ class Api:
         """Get list of projects followed.
 
         Endpoint:
-            GET: ``/projects``
+            GET ``/projects``
         """
         endpoint = "projects"
         resp = self._request(GET, endpoint)
@@ -91,7 +88,7 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
-            POST: ``/project/:vcs-type/:username/:project/follow``
+            POST ``/project/:vcs-type/:username/:project/follow``
         """
         slug = self.project_slug(username, project, vcs_type)
         endpoint = "project/{0}/follow".format(slug)
@@ -128,7 +125,7 @@ class Api:
         :type shallow: bool
 
         Endpoint:
-            GET: ``/project/:vcs-type/:username/:project``
+            GET ``/project/:vcs-type/:username/:project``
         """
         valid_filters = [None, "completed", "successful", "failed", "running"]
 
@@ -172,7 +169,7 @@ class Api:
         :type shallow: bool
 
         Endpoint:
-            GET: ``/recent-builds``
+            GET ``/recent-builds``
         """
         _shallow = "&shallow=true" if shallow else ""
         endpoint = "recent-builds?limit={0}&offset={1}{2}".format(limit, offset, _shallow)
@@ -188,13 +185,10 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
-            GET: ``/project/:vcs-type/:username/:project/:build_num``
+            GET ``/project/:vcs-type/:username/:project/:build_num``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/{1}".format(
-            slug,
-            build_num,
-        )
+        endpoint = "project/{0}/{1}".format(slug, build_num)
         resp = self._request(GET, endpoint)
         return resp
 
@@ -207,13 +201,10 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
-            GET: ``/project/:vcs-type/:username/:project/:build_num/artifacts``
+            GET ``/project/:vcs-type/:username/:project/:build_num/artifacts``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/{1}/artifacts".format(
-            slug,
-            build_num,
-        )
+        endpoint = "project/{0}/{1}/artifacts".format(slug, build_num)
         resp = self._request(GET, endpoint)
         return resp
 
@@ -241,7 +232,7 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
-            GET: ``/project/:vcs-type/:username/:project/latest/artifacts``
+            GET ``/project/:vcs-type/:username/:project/latest/artifacts``
         """
         valid_filters = ["completed", "successful", "failed"]
 
@@ -288,16 +279,11 @@ class Api:
         :type ssh: bool
 
         Endpoint:
-            POST: ``/project/:vcs-type/:username/:project/:build_num/{retry|ssh}``
+            POST ``/project/:vcs-type/:username/:project/:build_num/{retry|ssh}``
         """
         action = "ssh" if ssh else "retry"
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/{1}/{2}".format(
-            slug,
-            build_num,
-            action,
-        )
-
+        endpoint = "project/{0}/{1}/{2}".format(slug, build_num, action)
         resp = self._request(POST, endpoint)
         return resp
 
@@ -310,13 +296,10 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
-            POST: ``/project/:vcs-type/:username/:project/:build_num/cancel``
+            POST ``/project/:vcs-type/:username/:project/:build_num/cancel``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/{1}/cancel".format(
-            slug,
-            build_num,
-        )
+        endpoint = "project/{0}/{1}/cancel".format(slug, build_num)
         resp = self._request(POST, endpoint)
         return resp
 
@@ -349,10 +332,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/pipeline/:number``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/pipeline/{1}".format(
-            slug,
-            pipeline_num,
-        )
+        endpoint = "project/{0}/pipeline/{1}".format(slug, pipeline_num)
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -362,7 +342,7 @@ class Api:
         :param pipeline_id: Pipieline ID.
 
         Endpoint:
-            GET: ``/pipeline/:id``
+            GET ``/pipeline/:id``
         """
         endpoint = "pipeline/{0}".format(pipeline_id)
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
@@ -374,7 +354,7 @@ class Api:
         :param pipeline_id: Pipieline ID.
 
         Endpoint:
-            GET: ``/pipeline/:id/config``
+            GET ``/pipeline/:id/config``
         """
         endpoint = "pipeline/{0}/config".format(pipeline_id)
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
@@ -388,7 +368,7 @@ class Api:
         :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
 
         Endpoint:
-            GET: ``/pipeline/:id/workflow``
+            GET ``/pipeline/:id/workflow``
         """
         endpoint = "pipeline/{0}/workflow".format(pipeline_id)
         resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
@@ -400,7 +380,7 @@ class Api:
         :param workflow_id: Workflow ID.
 
         Endpoint:
-            GET: ``/workflow/:id``
+            GET ``/workflow/:id``
         """
         endpoint = "workflow/{0}".format(workflow_id)
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
@@ -414,7 +394,7 @@ class Api:
         :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
 
         Endpoint:
-            GET: ``/workflow/:id/job``
+            GET ``/workflow/:id/job``
         """
         endpoint = "workflow/{0}/job".format(workflow_id)
         resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
@@ -442,13 +422,10 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
-            POST: ``/project/:vcs-type/:username/:project/:build_num/ssh-users``
+            POST ``/project/:vcs-type/:username/:project/:build_num/ssh-users``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/{1}/ssh-users".format(
-            slug,
-            build_num,
-        )
+        endpoint = "project/{0}/{1}/ssh-users".format(slug, build_num)
         resp = self._request(POST, endpoint)
         return resp
 
@@ -486,7 +463,7 @@ class Api:
         :type parallel: int
 
         Endpoint:
-            POST: ``project/:vcs-type/:username/:project/tree/:branch``
+            POST ``project/:vcs-type/:username/:project/tree/:branch``
         """
         data = {
             "parallel": parallel,
@@ -498,11 +475,7 @@ class Api:
             data.update(params)
 
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/tree/{1}".format(
-            slug,
-            branch,
-        )
-
+        endpoint = "project/{0}/tree/{1}".format(slug, branch)
         resp = self._request(POST, endpoint, data=data)
         return resp
 
@@ -565,7 +538,7 @@ class Api:
             for this hostname.
 
         Endpoint:
-            POST: ``/project/:vcs-type/:username/:project/ssh-key``
+            POST ``/project/:vcs-type/:username/:project/ssh-key``
         """
         slug = self.project_slug(username, project, vcs_type)
         endpoint = "project/{0}/ssh-key".format(slug)
@@ -586,7 +559,7 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
-            GET: ``project/:vcs-type/:username/:project/checkout-key``
+            GET ``project/:vcs-type/:username/:project/checkout-key``
         """
         slug = self.project_slug(username, project, vcs_type)
         endpoint = "project/{0}/checkout-key".format(slug)
@@ -603,7 +576,7 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
-            POST: ``/project/:vcs-type/:username/:project/checkout-key``
+            POST ``/project/:vcs-type/:username/:project/checkout-key``
         """
         valid_types = ["deploy-key", "github-user-key"]
 
@@ -626,14 +599,10 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
-            GET: ``/project/:vcs-type/:username/:project/checkout-key/:fingerprint``
+            GET ``/project/:vcs-type/:username/:project/checkout-key/:fingerprint``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/checkout-key/{1}".format(
-            slug,
-            fingerprint,
-        )
-
+        endpoint = "project/{0}/checkout-key/{1}".format(slug, fingerprint)
         resp = self._request(GET, endpoint)
         return resp
 
@@ -646,14 +615,10 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
-            DELETE: ``/project/:vcs-type/:username/:project/checkout-key/:fingerprint``
+            DELETE ``/project/:vcs-type/:username/:project/checkout-key/:fingerprint``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/checkout-key/{1}".format(
-            slug,
-            fingerprint,
-        )
-
+        endpoint = "project/{0}/checkout-key/{1}".format(slug, fingerprint)
         resp = self._request(DELETE, endpoint)
         return resp
 
@@ -666,14 +631,10 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
-            GET: ``/project/:vcs-type/:username/:project/:build_num/tests``
+            GET ``/project/:vcs-type/:username/:project/:build_num/tests``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/{1}/tests".format(
-            slug,
-            build_num,
-        )
-
+        endpoint = "project/{0}/{1}/tests".format(slug, build_num)
         resp = self._request(GET, endpoint)
         return resp
 
@@ -685,7 +646,7 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
-            GET: ``/project/:vcs-type/:username/:project/envvar``
+            GET ``/project/:vcs-type/:username/:project/envvar``
         """
         slug = self.project_slug(username, project, vcs_type)
         endpoint = "project/{0}/envvar".format(slug)
@@ -702,7 +663,7 @@ class Api:
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
 
         Endpoint:
-            POST: ``/project/:vcs-type/:username/:project/envvar``
+            POST ``/project/:vcs-type/:username/:project/envvar``
         """
         params = {
             "name": name,
@@ -726,11 +687,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/envvar/:name``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/envvar/{1}".format(
-            slug,
-            name,
-        )
-
+        endpoint = "project/{0}/envvar/{1}".format(slug, name)
         resp = self._request(GET, endpoint)
         return resp
 
@@ -746,11 +703,7 @@ class Api:
             DELETE ``/project/:vcs-type/:username/:project/envvar/:name``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/envvar/{1}".format(
-            slug,
-            name,
-        )
-
+        endpoint = "project/{0}/envvar/{1}".format(slug, name)
         resp = self._request(DELETE, endpoint)
         return resp
 
@@ -775,13 +728,14 @@ class Api:
         elif owner_id:
             params["owner-id"] = owner_id
 
-        resp = self._request_get_depaginate("context", params=params, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        endpoint = "context"
+        resp = self._request_get_depaginate(endpoint, params=params, api_version=API_VER_V2, paginate=paginate, limit=limit)
         return resp
 
     def add_context(self, name, username=None, owner_id=None, owner_type=ORGANIZATION, vcs_type=GITHUB):
         """Add a new context at org or account level.
 
-        :param name:  Context name to add.
+        :param name: Context name to add.
         :param owner_id: UUID of owner (use either ``username`` or ``owner_id``).
         :param username: Org or user name.
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
@@ -797,7 +751,8 @@ class Api:
         elif owner_id:
             data["owner"]["id"] = owner_id
 
-        resp = self._request(POST, "context", data=data, api_version=API_VER_V2)
+        endpoint = "context"
+        resp = self._request(POST, endpoint, data=data, api_version=API_VER_V2)
         return resp
 
     def get_context(self, context_id):
@@ -809,7 +764,6 @@ class Api:
             GET ``/v2/context/:context-id``
         """
         endpoint = "context/{0}".format(context_id)
-
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -822,7 +776,6 @@ class Api:
             DELETE ``/v2/context/:context-id``
         """
         endpoint = "context/{0}".format(context_id)
-
         resp = self._request(DELETE, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -837,7 +790,6 @@ class Api:
             GET ``/v2/context/:context-id/environment-variable``
         """
         endpoint = "context/{0}/environment-variable".format(context_id)
-
         resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
         return resp
 
@@ -853,7 +805,6 @@ class Api:
         """
         data = {"value": value}
         endpoint = "context/{0}/environment-variable/{1}".format(context_id, name)
-
         resp = self._request(PUT, endpoint, api_version=API_VER_V2, data=data)
         return resp
 
@@ -867,7 +818,6 @@ class Api:
             DELETE ``/context/:context-id/environment-variable/:name``
         """
         endpoint = "context/{0}/environment-variable/{1}".format(context_id, name)
-
         resp = self._request(DELETE, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -936,10 +886,7 @@ class Api:
             GET ``/insights/:vcs-type/:username/:project/workflows/:name``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "insights/{0}/workflows/{1}".format(
-            slug,
-            workflow_name,
-        )
+        endpoint = "insights/{0}/workflows/{1}".format(slug, workflow_name)
         resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
         return resp
 
@@ -957,10 +904,7 @@ class Api:
             GET ``/insights/:vcs-type/:username/:project/workflows/:name/jobs``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "insights/{0}/workflows/{1}/jobs".format(
-            slug,
-            workflow_name,
-        )
+        endpoint = "insights/{0}/workflows/{1}/jobs".format(slug, workflow_name)
         resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
         return resp
 
@@ -979,11 +923,7 @@ class Api:
             GET ``/insights/:vcs-type/:username/:project/workflows/:name/jobs/:job-name``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "insights/{0}/workflows/{1}/jobs/{2}".format(
-            slug,
-            workflow_name,
-            job_name,
-        )
+        endpoint = "insights/{0}/workflows/{1}/jobs/{2}".format(slug, workflow_name, job_name)
         resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
         return resp
 
@@ -1070,7 +1010,7 @@ class Api:
     def _request(self, verb, endpoint, data=None, params=None, api_version=None):
         """Send an HTTP request.
 
-        :param verb: HTTP method. GET, POST or DELETE.
+        :param verb: HTTP method. GET, POST, PUT or DELETE.
         :param endpoint: API endpoint to call.
         :param data: Optional POST data.
         :param params: Optional query parameters to use for the call.
@@ -1147,8 +1087,7 @@ class Api:
         """Download a file.
 
         :param url: URL to the artifact.
-        :param destdir: Optional destination directory.
-            Defaults to None (curent working directory).
+        :param destdir: Optional destination directory. Defaults to None (curent working directory).
         :param filename: Optional file name. Defaults to the name of the artifact file.
         """
         if not filename:
@@ -1158,11 +1097,9 @@ class Api:
             destdir = os.getcwd()
 
         endpoint = "{0}?circle-token={1}".format(url, self.token)
-
         resp = self._session.get(endpoint, stream=True)
 
         path = "{0}/{1}".format(destdir, filename)
-
         with open(path, "wb") as f:
             for chunk in resp.iter_content(chunk_size=1024):
                 if chunk:

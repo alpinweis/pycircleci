@@ -2,7 +2,7 @@ import json
 import unittest
 from unittest.mock import MagicMock
 
-from pycircleci.api import Api, CircleciError
+from pycircleci.api import Api, CircleciError, DELETE, GET, POST, PUT
 
 
 def js(text):
@@ -28,7 +28,7 @@ class TestCircleciApi(unittest.TestCase):
         self.assertIn("Invalid verb: BAD", str(e.exception))
 
     def test_get_user_info(self):
-        self.get_mock("user_info_response")
+        self.get_mock("get_user_info_response")
         resp = js(self.c.get_user_info())
 
         self.assertEqual(resp["selected_email"], "mock+ccie-tester@circleci.com")
@@ -55,10 +55,9 @@ class TestCircleciApi(unittest.TestCase):
         self.assertEqual(resp["mock+following"], True)
 
     def test_get_project_build_summary(self):
-        self.get_mock("project_build_summary_response")
+        self.get_mock("get_project_build_summary_response")
         resp = js(self.c.get_project_build_summary("ccie-tester", "testing"))
 
-        self.assertEqual(len(resp), 6)
         self.assertEqual(resp[0]["username"], "MOCK+ccie-tester")
 
         # with invalid status filter
@@ -70,14 +69,12 @@ class TestCircleciApi(unittest.TestCase):
         # with branch
         resp = js(self.c.get_project_build_summary("ccie-tester", "testing", branch="master"))
 
-        self.assertEqual(len(resp), 6)
         self.assertEqual(resp[0]["username"], "MOCK+ccie-tester")
 
     def test_get_recent_builds(self):
         self.get_mock("get_recent_builds_response")
         resp = js(self.c.get_recent_builds())
 
-        self.assertEqual(len(resp), 7)
         self.assertEqual(resp[0]["reponame"], "MOCK+testing")
 
     def test_get_build_info(self):
@@ -130,11 +127,11 @@ class TestCircleciApi(unittest.TestCase):
 
         self.assertEqual(resp["state"], "pending")
 
-    def test_get_project_pipelines(self):
+    def test_get_project_pipelines_depaginated(self):
         self.get_mock("get_project_pipelines_response")
         resp = js(self.c.get_project_pipelines("foo", "bar"))
 
-        self.assertEqual(resp["items"][0]["project_slug"], "gh/foo/bar")
+        self.assertEqual(resp[0]["project_slug"], "gh/foo/bar")
 
     def test_get_project_pipeline(self):
         self.get_mock("get_project_pipeline_response")
@@ -155,11 +152,11 @@ class TestCircleciApi(unittest.TestCase):
         self.assertIn("source", resp)
         self.assertIn("compiled", resp)
 
-    def test_get_pipeline_workflow(self):
+    def test_get_pipeline_workflow_depaginated(self):
         self.get_mock("get_pipeline_workflow_response")
         resp = js(self.c.get_pipeline_workflow("dummy-pipeline-id"))
 
-        self.assertEqual(resp["items"][0]["project_slug"], "gh/foo/bar")
+        self.assertEqual(resp[0]["project_slug"], "gh/foo/bar")
 
     def test_get_workflow(self):
         self.get_mock("get_workflow_response")
@@ -167,11 +164,11 @@ class TestCircleciApi(unittest.TestCase):
 
         self.assertEqual(resp["status"], "running")
 
-    def test_get_workflow_jobs(self):
+    def test_get_workflow_jobs_depaginated(self):
         self.get_mock("get_workflow_jobs_response")
         resp = js(self.c.get_workflow_jobs("dummy-workflow-id"))
 
-        self.assertEqual(len(resp["items"]), 2)
+        self.assertEqual(len(resp), 2)
 
     def test_approve_job(self):
         self.get_mock("approve_job_response")
@@ -245,7 +242,7 @@ class TestCircleciApi(unittest.TestCase):
 
         self.assertEqual(resp["message"], "ok")
 
-    def test_get_contexts(self):
+    def test_get_contexts_depaginated(self):
         self.get_mock("get_contexts_response")
         resp = js(self.c.get_contexts("user"))
 
@@ -259,9 +256,9 @@ class TestCircleciApi(unittest.TestCase):
             paginate=False,
             limit=None,
         )
-        self.assertEqual(resp["items"][0]["name"], "context1")
-        self.assertEqual(resp["items"][2]["name"], "foobar")
-        self.assertEqual(resp["items"][0]["id"], "a2683f02-d716-4b1e-bb61-d8a5cf5308f1")
+        self.assertEqual(resp[0]["id"], "a2683f02-d716-4b1e-bb61-d8a5cf5308f1")
+        self.assertEqual(resp[0]["name"], "context1")
+        self.assertEqual(resp[2]["name"], "foobar")
 
     def test_get_contexts_owner_id(self):
         self.get_mock("get_contexts_response")
@@ -277,7 +274,7 @@ class TestCircleciApi(unittest.TestCase):
             paginate=False,
             limit=None,
         )
-        self.assertEqual(resp["items"][0]["name"], "context1")
+        self.assertEqual(resp[0]["name"], "context1")
 
     def test_get_contexts_owner_type(self):
         self.get_mock("get_contexts_response")
@@ -293,14 +290,14 @@ class TestCircleciApi(unittest.TestCase):
             paginate=False,
             limit=None,
         )
-        self.assertEqual(resp["items"][0]["name"], "context1")
+        self.assertEqual(resp[0]["name"], "context1")
 
     def test_add_context(self):
         self.get_mock("add_context_response")
         resp = js(self.c.add_context("testcontext", "user"))
 
         self.c._request.assert_called_once_with(
-            "POST",
+            POST,
             "context",
             data={
                 "name": "testcontext",
@@ -318,7 +315,7 @@ class TestCircleciApi(unittest.TestCase):
         resp = js(self.c.add_context("testcontext", "user", owner_type="account"))
 
         self.c._request.assert_called_once_with(
-            "POST",
+            POST,
             "context",
             data={
                 "name": "testcontext",
@@ -336,7 +333,7 @@ class TestCircleciApi(unittest.TestCase):
         resp = js(self.c.get_context("497f6eca-6276-4993-bfeb-53cbbbba6f08"))
 
         self.c._request.assert_called_once_with(
-            "GET",
+            GET,
             "context/497f6eca-6276-4993-bfeb-53cbbbba6f08",
             api_version="v2",
         )
@@ -347,13 +344,13 @@ class TestCircleciApi(unittest.TestCase):
         resp = js(self.c.delete_context("497f6eca-6276-4993-bfeb-53cbbbba6f08"))
 
         self.c._request.assert_called_once_with(
-            "DELETE",
+            DELETE,
             "context/497f6eca-6276-4993-bfeb-53cbbbba6f08",
             api_version="v2",
         )
         self.assertEqual(resp["message"], "Context deleted.")
 
-    def test_get_context_envvars(self):
+    def test_get_context_envvars_depaginated(self):
         self.get_mock("get_context_envvars_response")
         resp = js(self.c.get_context_envvars("a5b6416b-369e-44a9-8d47-8970325d4134"))
 
@@ -373,7 +370,7 @@ class TestCircleciApi(unittest.TestCase):
         ))
 
         self.c._request.assert_called_once_with(
-            "PUT",
+            PUT,
             "context/f31d7249-b7b1-4729-b3a4-ec0ba07b4686/environment-variable/FOOBAR",
             api_version="v2",
             data={"value": "BAZ"},
@@ -387,7 +384,7 @@ class TestCircleciApi(unittest.TestCase):
         ))
 
         self.c._request.assert_called_once_with(
-            "DELETE",
+            DELETE,
             "context/f31d7249-b7b1-4729-b3a4-ec0ba07b4686/environment-variable/FOOBAR",
             api_version="v2",
         )
@@ -413,33 +410,33 @@ class TestCircleciApi(unittest.TestCase):
 
         self.assertEqual(resp["default_branch"], "master")
 
-    def test_get_project_workflows_metrics(self):
+    def test_get_project_workflows_metrics_depaginated(self):
         self.get_mock("get_project_workflows_metrics_response")
         resp = js(self.c.get_project_workflows_metrics("foo", "bar"))
 
-        self.assertIn("metrics", resp["items"][0])
-        self.assertIn("duration_metrics", resp["items"][0]["metrics"])
+        self.assertIn("metrics", resp[0])
+        self.assertIn("duration_metrics", resp[0]["metrics"])
 
-    def test_get_project_workflow_metrics(self):
+    def test_get_project_workflow_metrics_depaginated(self):
         self.get_mock("get_project_workflow_metrics_response")
         resp = js(self.c.get_project_workflow_metrics("foo", "bar", "workflow"))
 
-        self.assertEqual(resp["items"][0]["status"], "success")
-        self.assertIn("duration", resp["items"][0])
+        self.assertEqual(resp[0]["status"], "success")
+        self.assertIn("duration", resp[0])
 
-    def test_get_project_workflow_jobs_metrics(self):
+    def test_get_project_workflow_jobs_metrics_depaginated(self):
         self.get_mock("get_project_workflow_jobs_metrics_response")
         resp = js(self.c.get_project_workflow_jobs_metrics("foo", "bar", "workflow"))
 
-        self.assertIn("metrics", resp["items"][0])
-        self.assertIn("duration_metrics", resp["items"][0]["metrics"])
+        self.assertIn("metrics", resp[0])
+        self.assertIn("duration_metrics", resp[0]["metrics"])
 
-    def test_get_project_workflow_job_metrics(self):
+    def test_get_project_workflow_job_metrics_depaginated(self):
         self.get_mock("get_project_workflow_job_metrics_response")
         resp = js(self.c.get_project_workflow_job_metrics("foo", "bar", "workflow", "job"))
 
-        self.assertEqual(resp["items"][0]["status"], "success")
-        self.assertIn("duration", resp["items"][0])
+        self.assertEqual(resp[0]["status"], "success")
+        self.assertIn("duration", resp[0])
 
     def test_get_job_details(self):
         self.get_mock("get_job_details_response")
