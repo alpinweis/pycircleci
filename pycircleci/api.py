@@ -765,7 +765,7 @@ class Api:
         :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
 
         Endpoint:
-            GET ``/v2/context?owner-slug=:vcs_type/:username``
+            GET ``/v2/context?owner-slug=:vcs-type/:username``
         """
 
         params = {"owner-type": owner_type}
@@ -806,7 +806,7 @@ class Api:
         :param context_id: UUID of context to get.
 
         Endpoint:
-            GET ``/v2/context/:context_id``
+            GET ``/v2/context/:context-id``
         """
         endpoint = "context/{0}".format(context_id)
 
@@ -819,7 +819,7 @@ class Api:
         :param context_id: UUID of context to delete.
 
         Endpoint:
-            DELETE ``/v2/context/:context_id``
+            DELETE ``/v2/context/:context-id``
         """
         endpoint = "context/{0}".format(context_id)
 
@@ -827,14 +827,14 @@ class Api:
         return resp
 
     def get_context_envvars(self, context_id, paginate=False, limit=None):
-        """Get environment variables for a context
+        """Get environment variables for a context.
 
-        :param context_id: ID of context to retrieve environment variables from
+        :param context_id: ID of context to retrieve environment variables from.
         :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False..
         :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
 
         Endpoint:
-            GET ``/v2/context/:context_id/environment-variable``
+            GET ``/v2/context/:context-id/environment-variable``
         """
         endpoint = "context/{0}/environment-variable".format(context_id)
 
@@ -849,7 +849,7 @@ class Api:
         :param value: Value of the environment variable.
 
         Endpoint:
-            PUT: ``/context/:context-id/environment-variable/:name``
+            PUT ``/context/:context-id/environment-variable/:name``
         """
         data = {"value": value}
         endpoint = "context/{0}/environment-variable/{1}".format(context_id, name)
@@ -864,7 +864,7 @@ class Api:
         :param name: Name of the environment variable.
 
         Endpoint:
-            DELETE: ``/context/:context-id/environment-variable/:name``
+            DELETE ``/context/:context-id/environment-variable/:name``
         """
         endpoint = "context/{0}/environment-variable/{1}".format(context_id, name)
 
@@ -1031,7 +1031,7 @@ class Api:
 
         :param slug: Project slug.
 
-        Returns: tuple ``(:vcs_type, :username, :reponame)``
+        Returns: tuple ``(:vcs-type, :username, :reponame)``
         """
         parts = slug.split("/")
         if len(parts) != 3:

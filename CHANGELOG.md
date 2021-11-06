@@ -1,3 +1,7 @@
+### [0.4.1] - 2021-11-07
+* Fix get_contexts()
+* Add endpoints for context environment variables (API v2)
+
 ### [0.4.0] - 2021-11-06
 * Add context endpoints (API v2)
 * Add job details endpoint (API v2)
