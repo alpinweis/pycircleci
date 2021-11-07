@@ -8,4 +8,4 @@ pack:
 	python setup.py sdist bdist_wheel
 
 test:
-	python -m unittest discover tests
+	python -m pytest -v
