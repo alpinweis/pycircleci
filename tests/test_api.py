@@ -24,16 +24,37 @@ def get_mock(api_client, filename):
         api_client._request_get_depaginate = MagicMock(return_value=resp)
 
 
-def test_bad_verb(cci):
+def assert_accepted(resp):
+    assert "Accepted" in resp["message"]
+
+
+def test_invalid_http_method(cci):
     with pytest.raises(CircleciError) as ex:
         cci._request("BAD", "dummy")
-    assert "Invalid verb: BAD" in str(ex.value)
+    assert "Invalid HTTP method: BAD" in str(ex.value)
 
 
 def test_get_user_info(cci):
     get_mock(cci, "get_user_info_response")
     resp = js(cci.get_user_info())
     assert resp["selected_email"] == "mock+ccie-tester@circleci.com"
+
+
+def test_get_user_id_info(cci):
+    get_mock(cci, "get_user_id_info_response")
+    resp = js(cci.get_user_id_info("12345678-abcd-1234-5678-abcdef123456"))
+    assert resp["id"] == "12345678-abcd-1234-5678-abcdef123456"
+    assert resp["name"] == "John"
+    assert resp["login"] == "johndoe"
+
+
+def test_get_user_collaborations(cci):
+    get_mock(cci, "get_user_collaborations_response")
+    resp = js(cci.get_user_collaborations())
+    assert resp[0]["vcs_type"] == "github"
+    assert resp[0]["name"] == "johndoe"
+    assert resp[1]["vcs_type"] == "github"
+    assert resp[1]["name"] == "org1"
 
 
 def test_get_project(cci):
@@ -139,6 +160,18 @@ def test_get_project_pipeline(cci):
     assert resp["number"] == 1234
 
 
+def test_continue_pipeline(cci):
+    get_mock(cci, "message_accepted_response")
+    resp = js(cci.continue_pipeline("continuation_key", "config"))
+    assert_accepted(resp)
+
+
+def test_get_pipelines(cci):
+    get_mock(cci, "get_pipelines_response")
+    resp = js(cci.get_pipelines("foo"))
+    assert resp[0]["project_slug"] == "gh/foo/bar"
+
+
 def test_get_pipeline(cci):
     get_mock(cci, "get_pipeline_response")
     resp = js(cci.get_pipeline("dummy-pipeline-id"))
@@ -171,9 +204,9 @@ def test_get_workflow_jobs_depaginated(cci):
 
 
 def test_approve_job(cci):
-    get_mock(cci, "approve_job_response")
+    get_mock(cci, "message_accepted_response")
     resp = js(cci.approve_job("workflow_id", "approval_request_id"))
-    assert resp["message"] == "Accepted."
+    assert_accepted(resp)
 
 
 def test_list_checkout_keys(cci):
@@ -234,7 +267,7 @@ def test_list_envvars(cci):
 
 
 def test_add_envvar(cci):
-    get_mock(cci, "add_envvar_response")
+    get_mock(cci, "get_envvar_response")
     resp = js(cci.add_envvar("user", "circleci-sandbox", "foo", "bar"))
     assert resp["name"] == "foo"
     assert resp["value"] != "bar"
@@ -307,7 +340,7 @@ def test_get_contexts_owner_type(cci):
 
 
 def test_add_context(cci):
-    get_mock(cci, "add_context_response")
+    get_mock(cci, "get_context_response")
     resp = js(cci.add_context("testcontext", "user"))
 
     cci._request.assert_called_once_with(
@@ -326,7 +359,7 @@ def test_add_context(cci):
 
 
 def test_add_context_organization(cci):
-    get_mock(cci, "add_context_response")
+    get_mock(cci, "get_context_response")
     resp = js(cci.add_context("testcontext", "user", owner_type="account"))
 
     cci._request.assert_called_once_with(
@@ -430,6 +463,12 @@ def test_get_project_settings(cci):
     assert resp["default_branch"] == "master"
 
 
+def test_get_project_branches(cci):
+    get_mock(cci, "get_project_branches_response")
+    resp = js(cci.get_project_branches("foo", "bar"))
+    assert "master" in resp["branches"]
+
+
 def test_get_project_workflows_metrics_depaginated(cci):
     get_mock(cci, "get_project_workflows_metrics_response")
     resp = js(cci.get_project_workflows_metrics("foo", "bar"))
@@ -442,6 +481,13 @@ def test_get_project_workflow_metrics_depaginated(cci):
     resp = js(cci.get_project_workflow_metrics("foo", "bar", "workflow"))
     assert resp[0]["status"] == "success"
     assert "duration" in resp[0]
+
+
+def test_get_project_workflow_test_metrics(cci):
+    get_mock(cci, "get_project_workflow_test_metrics_response")
+    resp = js(cci.get_project_workflow_test_metrics("foo", "bar", "workflow"))
+    assert resp["average_test_count"] == 2
+    assert resp["total_test_runs"] == 3
 
 
 def test_get_project_workflow_jobs_metrics_depaginated(cci):
@@ -458,8 +504,73 @@ def test_get_project_workflow_job_metrics_depaginated(cci):
     assert "duration" in resp[0]
 
 
+def test_get_schedules(cci):
+    get_mock(cci, "get_schedules_response")
+    resp = js(cci.get_schedules("foo", "bar"))
+    assert resp[0]["project-slug"] == "gh/foo/bar"
+    assert resp[0]["name"] == "schedule1"
+
+
+def test_get_schedule(cci):
+    get_mock(cci, "get_schedule_response")
+    resp = js(cci.get_schedule("497f6eca-6276-4993-bfeb-53cbbbba6f08"))
+    assert resp["project-slug"] == "gh/foo/bar"
+    assert resp["name"] == "schedule1"
+
+
+def test_add_schedule(cci):
+    get_mock(cci, "get_schedule_response")
+    data = {
+      "name": "schedule1",
+      "timetable": {
+        "per-hour": 0,
+        "hours-of-day": [0],
+        "days-of-week": ["TUE"]
+      },
+      "attribution-actor": "current",
+      "parameters": {
+        "deploy_prod": True,
+        "branch": "new_feature"
+      },
+    }
+    resp = js(cci.add_schedule("foo", "bar", "schedule1", settings=data))
+    assert resp["project-slug"] == "gh/foo/bar"
+    assert resp["name"] == "schedule1"
+
+
+def test_update_schedule(cci):
+    get_mock(cci, "get_schedule_response")
+    data = {"description": "test schedule"}
+    resp = js(cci.update_schedule("497f6eca-6276-4993-bfeb-53cbbbba6f08", data))
+    assert resp["description"] == "test schedule"
+
+
+def test_delete_schedule(cci):
+    get_mock(cci, "message_accepted_response")
+    resp = js(cci.delete_schedule("497f6eca-6276-4993-bfeb-53cbbbba6f08"))
+    assert_accepted(resp)
+
+
 def test_get_job_details(cci):
     get_mock(cci, "get_job_details_response")
     resp = js(cci.get_job_details("foo", "bar", 12345))
     assert resp["project"]["slug"] == "gh/foo/bar"
     assert resp["number"] == 12345
+
+
+def test_cancel_job(cci):
+    get_mock(cci, "message_accepted_response")
+    resp = js(cci.cancel_job("foo", "bar", 12345))
+    assert_accepted(resp)
+
+
+def test_cancel_workflow(cci):
+    get_mock(cci, "message_accepted_response")
+    resp = js(cci.cancel_workflow(12345))
+    assert_accepted(resp)
+
+
+def test_rerun_workflow(cci):
+    get_mock(cci, "message_accepted_response")
+    resp = js(cci.rerun_workflow(12345, from_failed=True))
+    assert_accepted(resp)

@@ -1,0 +1,25 @@
+{
+  "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+  "name": "schedule1",
+  "timetable": {
+    "per-hour": 0,
+    "hours-of-day": [
+      0
+    ],
+    "days-of-week": [
+      "TUE"
+    ]
+  },
+  "description": "test schedule",
+  "project-slug": "gh/foo/bar",
+  "actor": {
+    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+    "login": "johndoe",
+    "name": "John"
+  },
+  "created-at": "2019-08-24T14:15:22Z",
+  "parameters": {
+    "deploy_prod": true,
+    "branch": "new_feature"
+  }
+}
