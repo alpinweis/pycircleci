@@ -11,4 +11,4 @@ pack:
 	python setup.py sdist bdist_wheel
 
 test:
-	python -m pytest -v
+	pytest -v tests/

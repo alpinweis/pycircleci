@@ -49,7 +49,7 @@
         "success": 0,
         "total": 77
       },
-      "workflow_id": "684c2ac5-5883-400b-a95d-83dbe6fa9c11"
+      "workflow_id": "deadbeef-dead-beef-dead-deadbeef0001"
     },
     {
       "pipeline_number": 1235,
@@ -61,7 +61,7 @@
         "success": 73,
         "total": 77
       },
-      "workflow_id": "00073fb1-d233-458a-a963-16afe4398622"
+      "workflow_id": "deadbeef-dead-beef-dead-deadbeef0002"
     },
     {
       "pipeline_number": 1236,
@@ -73,7 +73,7 @@
         "success": 0,
         "total": 77
       },
-      "workflow_id": "b659c4e4-1504-48a0-a49a-c3b8aa110333"
+      "workflow_id": "deadbeef-dead-beef-dead-deadbeef0003"
     }
   ],
   "total_test_runs": 3

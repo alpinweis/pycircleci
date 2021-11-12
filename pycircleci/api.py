@@ -398,7 +398,7 @@ class Api:
         endpoint = "project/{0}/pipeline".format(slug)
         if mine:
             endpoint += "/mine"
-        resp = self._request_get_depaginate(endpoint, params=params, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_items(endpoint, params=params, paginate=paginate, limit=limit)
         return resp
 
     def get_project_pipeline(self, username, project, pipeline_num, vcs_type=GITHUB):
@@ -455,7 +455,7 @@ class Api:
             params["mine"] = True
 
         endpoint = "pipeline"
-        resp = self._request_get_depaginate(endpoint, params=params, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_items(endpoint, params=params, paginate=paginate, limit=limit)
         return resp
 
     def get_pipeline(self, pipeline_id):
@@ -493,7 +493,7 @@ class Api:
             GET ``/pipeline/:pipeline-id/workflow``
         """
         endpoint = "pipeline/{0}/workflow".format(pipeline_id)
-        resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_items(endpoint, paginate=paginate, limit=limit)
         return resp
 
     def get_workflow(self, workflow_id):
@@ -519,7 +519,7 @@ class Api:
             GET ``/workflow/:workflow-id/job``
         """
         endpoint = "workflow/{0}/job".format(workflow_id)
-        resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_items(endpoint, paginate=paginate, limit=limit)
         return resp
 
     def cancel_workflow(self, workflow_id):
@@ -852,7 +852,7 @@ class Api:
             params["owner-id"] = owner_id
 
         endpoint = "context"
-        resp = self._request_get_depaginate(endpoint, params=params, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_items(endpoint, params=params, paginate=paginate, limit=limit)
         return resp
 
     def get_context(self, context_id):
@@ -913,7 +913,7 @@ class Api:
             GET ``/context/:context-id/environment-variable``
         """
         endpoint = "context/{0}/environment-variable".format(context_id)
-        resp = self._request_get_depaginate(endpoint, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_items(endpoint, paginate=paginate, limit=limit)
         return resp
 
     def add_context_envvar(self, context_id, name, value):
@@ -966,7 +966,7 @@ class Api:
         :param project: Repo name.
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
         :param settings: Settings to update.
-            Refer to mocks/get_project_settings_response for example settings.
+            Refer to mocks/get_project_settings_response.json for example settings.
 
         :type settings: dict
 
@@ -1010,7 +1010,7 @@ class Api:
         """
         slug = self.project_slug(username, project, vcs_type)
         endpoint = "insights/{0}/workflows".format(slug)
-        resp = self._request_get_depaginate(endpoint, params=params, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_items(endpoint, params=params, paginate=paginate, limit=limit)
         return resp
 
     def get_project_workflow_metrics(self, username, project, workflow_name, params=None, vcs_type=GITHUB, paginate=False, limit=None):
@@ -1029,7 +1029,7 @@ class Api:
         """
         slug = self.project_slug(username, project, vcs_type)
         endpoint = "insights/{0}/workflows/{1}".format(slug, workflow_name)
-        resp = self._request_get_depaginate(endpoint, params=params, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_items(endpoint, params=params, paginate=paginate, limit=limit)
         return resp
 
     def get_project_workflow_test_metrics(self, username, project, workflow_name, params=None, vcs_type=GITHUB):
@@ -1065,7 +1065,7 @@ class Api:
         """
         slug = self.project_slug(username, project, vcs_type)
         endpoint = "insights/{0}/workflows/{1}/jobs".format(slug, workflow_name)
-        resp = self._request_get_depaginate(endpoint, params=params, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_items(endpoint, params=params, paginate=paginate, limit=limit)
         return resp
 
     def get_project_workflow_job_metrics(self, username, project, workflow_name, job_name, params=None, vcs_type=GITHUB, paginate=False, limit=None):
@@ -1085,7 +1085,7 @@ class Api:
         """
         slug = self.project_slug(username, project, vcs_type)
         endpoint = "insights/{0}/workflows/{1}/jobs/{2}".format(slug, workflow_name, job_name)
-        resp = self._request_get_depaginate(endpoint, params=params, api_version=API_VER_V2, paginate=paginate, limit=limit)
+        resp = self._request_get_items(endpoint, params=params, paginate=paginate, limit=limit)
         return resp
 
     def get_schedules(self, username, project, vcs_type=GITHUB):
@@ -1123,7 +1123,7 @@ class Api:
         :param name: Name of the schedule.
         :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
         :param settings: Schedule settings.
-            Refer to mocks/get_schedule_response for example settings.
+            Refer to mocks/get_schedule_response.json for example settings.
 
         :type settings: dict
 
@@ -1143,7 +1143,7 @@ class Api:
 
         :param schedule_id: UUID of schedule to update.
         :param settings: Schedule settings.
-            Refer to mocks/get_schedule_response for example settings.
+            Refer to mocks/get_schedule_response.json for example settings.
 
         :type settings: dict
 
@@ -1281,12 +1281,11 @@ class Api:
         resp.raise_for_status()
         return resp.json()
 
-    def _request_get_depaginate(self, endpoint, params=None, api_version=API_VER_V2, paginate=False, limit=None):
-        """Send one or more HTTP GET requests and optionally depaginate the results, up to a limit.
+    def _request_get_items(self, endpoint, params=None, paginate=False, limit=None):
+        """Send one or more HTTP GET requests and optionally depaginate results, up to a limit. Only supported by API v2
 
         :param endpoint: API endpoint to GET.
         :param params: Optional query parameters.
-        :param api_version: Optional API version. Defaults to v2.
         :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False.
         :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
 
@@ -1296,16 +1295,13 @@ class Api:
 
         :returns: A list of items which are the combined results of the requests made.
         """
-        api_version = self.validate_api_version(api_version)
-        if api_version == API_VER_V1:
-            raise NotImplementedError("Depagination is not supported by CircleCI API {}".format(api_version))
-
         results = []
         params = {} if params is None else params.copy()
 
         while True:
-            resp = self._request(GET, endpoint, params=params, api_version=api_version)
-            results.extend(resp["items"])
+            resp = self._request(GET, endpoint, params=params, api_version=API_VER_V2)
+            items = resp["items"]
+            results.extend(items)
             if not paginate or not resp["next_page_token"] or (limit and len(results) >= limit):
                 break
             params["page-token"] = resp["next_page_token"]

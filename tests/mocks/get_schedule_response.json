@@ -1,5 +1,5 @@
 {
-  "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+  "id": "deadbeef-dead-beef-dead-deaddeafbeef",
   "name": "schedule1",
   "timetable": {
     "per-hour": 0,
@@ -13,7 +13,7 @@
   "description": "test schedule",
   "project-slug": "gh/foo/bar",
   "actor": {
-    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+    "id": "deadbeef-dead-beef-dead-deadbeef0000",
     "login": "johndoe",
     "name": "John"
   },

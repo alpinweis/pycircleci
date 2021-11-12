@@ -14,7 +14,7 @@
   "started_at": "2021-11-05T21:40:24.565Z",
   "latest_workflow": {
     "name": "foobar-test",
-    "id": "f2dcf8f8-1234-4a63-bcd5-b1400c52f6a9"
+    "id": "deadbeef-dead-beef-dead-deadbeef0001"
   },
   "name": "foobar_test",
   "executor": {
@@ -25,7 +25,7 @@
   "status": "success",
   "number": 12345,
   "pipeline": {
-    "id": "a0f452a4-1234-4a22-9806-b53cbf486b58"
+    "id": "deadbeef-dead-beef-dead-deadbeef0002"
   },
   "duration": 65359,
   "created_at": "2021-11-05T21:40:21.312Z",
