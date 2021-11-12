@@ -1,0 +1,27 @@
+[
+  {
+    "id": "deadbeef-dead-beef-dead-deaddeafbeef",
+    "name": "schedule1",
+    "timetable": {
+      "per-hour": 0,
+      "hours-of-day": [
+        0
+      ],
+      "days-of-week": [
+        "TUE"
+      ]
+    },
+    "description": "schedule1",
+    "project-slug": "gh/foo/bar",
+    "actor": {
+      "id": "deadbeef-dead-beef-dead-deadbeef0000",
+      "login": "johndoe",
+      "name": "John"
+    },
+    "created-at": "2019-08-24T14:15:22Z",
+    "parameters": {
+      "deploy_prod": true,
+      "branch": "new_feature"
+    }
+  }
+]

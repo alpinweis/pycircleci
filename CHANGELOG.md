@@ -1,3 +1,10 @@
+### [0.5.0] - 2021-11-10
+* Add more insights endpoints (API v2)
+* Add more pipeline endpoints (API v2)
+* Add more user endpoints (API v2)
+* Add more workflow endpoints (API v2)
+* Add schedule endpoints (API v2)
+
 ### [0.4.1] - 2021-11-07
 * Fix get_contexts()
 * Add endpoints for context environment variables (API v2)

@@ -1,0 +1,80 @@
+{
+  "average_test_count": 2,
+  "most_failed_tests": [
+    {
+      "failed_runs": 1,
+      "flaky": false,
+      "job_name": "job1",
+      "p95_duration": 20.864,
+      "test_name": "test1",
+      "total_runs": 2
+    },
+    {
+      "failed_runs": 1,
+      "flaky": false,
+      "job_name": "job2",
+      "p95_duration": 0.001,
+      "test_name": "test2",
+      "total_runs": 1
+    }
+  ],
+  "most_failed_tests_extra": 2,
+  "slowest_tests": [
+    {
+      "failed_runs": 0,
+      "flaky": false,
+      "job_name": "job3",
+      "p95_duration": 141.386,
+      "test_name": "test3",
+      "total_runs": 1
+    },
+    {
+      "failed_runs": 0,
+      "flaky": false,
+      "job_name": "job4",
+      "p95_duration": 141.144,
+      "test_name": "test4",
+      "total_runs": 1
+    }
+  ],
+  "slowest_tests_extra": 0,
+  "test_runs": [
+    {
+      "pipeline_number": 1234,
+      "success_rate": 0,
+      "test_counts": {
+        "error": 0,
+        "failure": 0,
+        "skipped": 2,
+        "success": 0,
+        "total": 77
+      },
+      "workflow_id": "deadbeef-dead-beef-dead-deadbeef0001"
+    },
+    {
+      "pipeline_number": 1235,
+      "success_rate": 1,
+      "test_counts": {
+        "error": 0,
+        "failure": 0,
+        "skipped": 2,
+        "success": 73,
+        "total": 77
+      },
+      "workflow_id": "deadbeef-dead-beef-dead-deadbeef0002"
+    },
+    {
+      "pipeline_number": 1236,
+      "success_rate": 0,
+      "test_counts": {
+        "error": 0,
+        "failure": 0,
+        "skipped": 2,
+        "success": 0,
+        "total": 77
+      },
+      "workflow_id": "deadbeef-dead-beef-dead-deadbeef0003"
+    }
+  ],
+  "total_test_runs": 3
+}

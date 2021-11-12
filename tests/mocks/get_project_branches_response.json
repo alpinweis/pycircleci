@@ -1,0 +1,10 @@
+{
+  "branches": [
+    "master",
+    "test",
+    "wip",
+    "work"
+  ],
+  "org_id": null,
+  "project_id": null
+}

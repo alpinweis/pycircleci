@@ -1,13 +1,22 @@
-from setuptools import setup
+import os
 
-VERSION = "0.4.1"
+from setuptools import find_packages, setup
+
+
+def version():
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "VERSION")
+    with open(path) as f:
+        ver = f.read().strip()
+    return ver
+
 
 with open("README.md", "r") as f:
     long_description = f.read()
 
+
 setup(
     name="pycircleci",
-    version=VERSION,
+    version=version(),
     description="Python client for CircleCI API",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -29,8 +38,8 @@ setup(
         "Programming Language :: Python :: 3 :: Only",
     ],
     keywords="circleci ci cd api",
-    packages=["pycircleci"],
-    install_requires=["requests"],
+    packages=find_packages(),
+    install_requires=["requests", "requests-toolbelt"],
     python_requires=">=3",
     zip_safe=False,
 )
