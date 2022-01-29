@@ -1230,7 +1230,7 @@ class Api:
             total=retries,
             backoff_factor=backoff_factor,
             status_forcelist=status_forcelist,
-            method_whitelist=False,
+            allowed_methods=False,
             raise_on_redirect=False,
             raise_on_status=False,
             respect_retry_after_header=False,
