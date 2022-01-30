@@ -1,3 +1,6 @@
+### [0.5.1] - 2022-01-30
+* Update deprecated Retry option
+
 ### [0.5.0] - 2021-11-10
 * Add more insights endpoints (API v2)
 * Add more pipeline endpoints (API v2)
