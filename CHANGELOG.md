@@ -1,3 +1,6 @@
+### [0.5.2] - 2022-05-26
+* Add support for Circle-Token header based auth
+
 ### [0.5.1] - 2022-01-30
 * Update deprecated Retry option
 
