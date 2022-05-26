@@ -1256,7 +1256,7 @@ class Api:
 
         :returns: A JSON object with the response from the API.
         """
-        headers = {"Accept": "application/json"}
+        headers = {"Accept": "application/json", "Circle-Token": self.token}
         auth = HTTPBasicAuth(self.token, "")
         resp = None
 
