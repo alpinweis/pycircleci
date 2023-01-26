@@ -1,6 +1,6 @@
 # pycircleci
 
-[![PyPI version](https://badge.fury.io/py/pycircleci.svg)](https://badge.fury.io/py/pycircleci)
+[![PyPI version](https://img.shields.io/pypi/v/pycircleci?color=blue)](https://python.org/pypi/pycircleci)
 [![Build Status](https://github.com/alpinweis/pycircleci/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/alpinweis/pycircleci/actions/workflows/test.yml?query=branch%3Amaster)
 
 Python client for [CircleCI API](https://circleci.com/docs/2.0/api-intro/).
