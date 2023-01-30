@@ -102,7 +102,7 @@ class Api:
         return resp
 
     def get_user_repos(self, vcs_type=GITHUB, paginate=False, limit=None):
-        """Get summary info about all the repos a user has the ability to see.
+        """Get list of repos accessible to the user.
 
         .. note::
             This is useful because ``get_projects`` only shows projects a user

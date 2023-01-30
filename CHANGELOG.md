@@ -1,3 +1,6 @@
+### [0.6.0] - 2023-01-30
+* Add endpoint to get user repos
+
 ### [0.5.2] - 2022-05-26
 * Add support for Circle-Token header based auth
 

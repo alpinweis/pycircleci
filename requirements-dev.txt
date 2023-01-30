@@ -1,5 +1,5 @@
-flake8 ~= 6.0
-flake8-quotes ~=3.0
+flake8~=6.0
+flake8-quotes~=3.0
 pytest
 requests
 requests-toolbelt
