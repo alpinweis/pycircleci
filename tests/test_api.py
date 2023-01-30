@@ -20,7 +20,8 @@ def get_mock(api_client, filename):
         text = f.read()
         resp = json.loads(text)
         api_client._request = MagicMock(return_value=resp)
-        api_client._request_get_items = MagicMock(return_value=resp)
+        # Spy on this, but don't mock its return value
+        api_client._request_get_items = MagicMock(wraps=api_client._request_get_items)
 
 
 def assert_message_accepted(resp):
@@ -58,6 +59,35 @@ def test_get_user_collaborations(cci):
     assert resp[0]["name"] == "johndoe"
     assert resp[1]["vcs_type"] == "github"
     assert resp[1]["name"] == "org1"
+
+
+def test_get_user_repos(cci):
+    get_mock(cci, "get_user_repos_response.json")
+    resp = cci.get_user_repos()
+    cci._request_get_items.assert_called_once_with(
+        "/user/repos/github",
+        api_version="v1.1",
+        paginate=False,
+        limit=None,
+    )
+    assert len(resp) == 3
+    assert resp[0]["vcs_type"] == "github"
+    assert resp[0]["name"] == "repo1"
+    assert resp[0]["username"] == "foobar"
+    assert resp[0]["has_followers"] is False
+    assert resp[1]["vcs_type"] == "github"
+    assert resp[1]["name"] == "repo2"
+    assert resp[1]["has_followers"] is True
+    assert resp[2]["username"] == "otherorg"
+    assert resp[2]["owner"]["login"] == "otherorg"
+    assert resp[2]["has_followers"] is False
+
+
+def test_get_user_repos_limit(cci):
+    get_mock(cci, "get_user_repos_response.json")
+    resp = cci.get_user_repos(limit=2)
+    assert cci._request_get_items.call_args.args[0] == "/user/repos/github"
+    assert len(resp) == 2
 
 
 def test_get_project(cci):

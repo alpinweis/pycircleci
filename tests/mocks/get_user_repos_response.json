@@ -1,0 +1,59 @@
+[
+  {
+    "pushed_at": "2023-01-26T06:08:43Z",
+    "owner": {
+      "login": "foobar",
+      "external_id": 12345699,
+      "avatar_url": "https://avatars.githubusercontent.com/u/12345699?v=4",
+      "name": "foobar"
+    },
+    "has_followers": false,
+    "username": "foobar",
+    "admin": true,
+    "name": "repo1",
+    "vcs_type": "github",
+    "created_at": "2019-10-02T14:24:30Z",
+    "fork": false,
+    "language": "TypeScript",
+    "vcs_url": "https://github.com/foobar/repo1",
+    "following": false
+  },
+  {
+    "pushed_at": "2023-01-26T04:35:10Z",
+    "owner": {
+      "login": "foobar",
+      "external_id": 12345699,
+      "avatar_url": "https://avatars.githubusercontent.com/u/12345699?v=4",
+      "name": "foobar"
+    },
+    "has_followers": true,
+    "username": "foobar",
+    "admin": true,
+    "name": "repo2",
+    "vcs_type": "github",
+    "created_at": "2018-10-15T22:20:17Z",
+    "fork": false,
+    "language": "JavaScript",
+    "vcs_url": "https://github.com/foobar/repo2",
+    "following": true
+  },
+  {
+    "pushed_at": "2018-10-09T17:32:27Z",
+    "owner": {
+      "login": "otherorg",
+      "external_id": 10888892,
+      "avatar_url": "https://avatars.githubusercontent.com/u/10888892?v=4",
+      "name": "otherorg"
+    },
+    "has_followers": false,
+    "username": "otherorg",
+    "admin": false,
+    "name": "repo3",
+    "vcs_type": "github",
+    "created_at": "2015-02-10T21:47:32Z",
+    "fork": false,
+    "language": "Ruby",
+    "vcs_url": "https://github.com/otherorg/repo3",
+    "following": false
+  }
+]

@@ -101,6 +101,26 @@ class Api:
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
+    def get_user_repos(self, vcs_type=GITHUB, paginate=False, limit=None):
+        """Get summary info about all the repos a user has the ability to see.
+
+        .. note::
+            This is useful because ``get_projects`` only shows projects a user
+            is following, and ``get_project`` can show a project as existing
+            even if it isn't currently setup.
+
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+        :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False.
+        :param limit: Maximum number of items to return. By default returns all the results from multiple calls to the endpoint, or all the results from a single call to the endpoint, depending on the value for ``paginate``.
+
+        Endpoint:
+            GET ``/user/repos/:vcs-type``
+        """
+        endpoint = "/user/repos/{0}".format(vcs_type)
+
+        resp = self._request_get_items(endpoint, api_version=API_VER_V1,  paginate=paginate, limit=limit)
+        return resp
+
     def get_project(self, slug):
         """Get a project by project slug.
 
@@ -1281,9 +1301,10 @@ class Api:
         resp.raise_for_status()
         return resp.json()
 
-    def _request_get_items(self, endpoint, params=None, paginate=False, limit=None):
-        """Send one or more HTTP GET requests and optionally depaginate results, up to a limit. Only supported by API v2
+    def _request_get_items(self, endpoint, params=None, api_version=API_VER_V2, paginate=False, limit=None):
+        """Send one or more HTTP GET requests and optionally depaginate results, up to a limit.
 
+        :param api_version: API version to use. Defaults to v2
         :param endpoint: API endpoint to GET.
         :param params: Optional query parameters.
         :param paginate: If True, repeatedly requests more items from the endpoint until the limit has been reached (or until all results have been fetched). Defaults to False.
@@ -1296,15 +1317,33 @@ class Api:
         :returns: A list of items which are the combined results of the requests made.
         """
         results = []
+        page = 1
         params = {} if params is None else params.copy()
 
+        if api_version == API_VER_V1:
+            # Don't fetch more than limit, but limit to 100 per page max
+            params["per-page"] = limit if limit and limit < 100 else 100
+
         while True:
-            resp = self._request(GET, endpoint, params=params, api_version=API_VER_V2)
-            items = resp["items"]
+            resp = self._request(GET, endpoint, params=params, api_version=api_version)
+            # Nested with v2 APIs; flat in v1
+            items = resp["items"] if "items" in resp else resp
             results.extend(items)
-            if not paginate or not resp["next_page_token"] or (limit and len(results) >= limit):
+
+            # Break on first iteration of the loop if we're not paginating, if
+            # we have an empty list from resp (v1), or if we've already hit our
+            # limit.
+            if not paginate or not resp or (limit and len(results) >= limit):
                 break
-            params["page-token"] = resp["next_page_token"]
+
+            page += 1
+            if api_version == API_VER_V2:
+                # Also break early if there's no next page (v2)
+                if not resp["next_page_token"]:
+                    break
+                params["page-token"] = resp["next_page_token"]
+            else:
+                params["page"] = page
 
         return results[:limit]
 
