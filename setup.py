@@ -43,6 +43,6 @@ setup(
     keywords="circleci ci cd api",
     packages=find_packages(),
     install_requires=["requests", "requests-toolbelt"],
-    python_requires=">=3",
+    python_requires=">=3.6",
     zip_safe=False,
 )

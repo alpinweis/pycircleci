@@ -1,3 +1,6 @@
+### [0.6.1] - 2023-02-04
+* Refactor string formatting to use f-strings
+
 ### [0.6.0] - 2023-01-30
 * Add endpoint to get user repos
 
