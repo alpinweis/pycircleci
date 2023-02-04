@@ -15,7 +15,7 @@ def cci():
 
 def get_mock(api_client, filename):
     """Get a mock response from file"""
-    filename = "tests/mocks/{0}".format(filename)
+    filename = f"tests/mocks/{filename}"
     with open(filename, "r") as f:
         text = f.read()
         resp = json.loads(text)
@@ -403,7 +403,7 @@ def test_get_context(cci):
     resp = cci.get_context(TEST_ID)
     cci._request.assert_called_once_with(
         GET,
-        "context/{0}".format(TEST_ID),
+        f"context/{TEST_ID}",
         api_version="v2",
     )
     assert resp["name"] == "testcontext"
@@ -414,7 +414,7 @@ def test_delete_context(cci):
     resp = cci.delete_context(TEST_ID)
     cci._request.assert_called_once_with(
         DELETE,
-        "context/{0}".format(TEST_ID),
+        f"context/{TEST_ID}",
         api_version="v2",
     )
     assert resp["message"] == "Context deleted."
@@ -424,7 +424,7 @@ def test_get_context_envvars_depaginated(cci):
     get_mock(cci, "get_context_envvars_response.json")
     resp = cci.get_context_envvars(TEST_ID)
     cci._request_get_items.assert_called_once_with(
-        "context/{0}/environment-variable".format(TEST_ID),
+        f"context/{TEST_ID}/environment-variable",
         paginate=False,
         limit=None,
     )
@@ -437,7 +437,7 @@ def test_add_context_envvar(cci):
     resp = cci.add_context_envvar(TEST_ID, "FOOBAR", "BAZ")
     cci._request.assert_called_once_with(
         PUT,
-        "context/{0}/environment-variable/FOOBAR".format(TEST_ID),
+        f"context/{TEST_ID}/environment-variable/FOOBAR",
         api_version="v2",
         data={"value": "BAZ"},
     )
@@ -449,7 +449,7 @@ def test_delete_context_envvar(cci):
     resp = cci.delete_context_envvar(TEST_ID, "FOOBAR")
     cci._request.assert_called_once_with(
         DELETE,
-        "context/{0}/environment-variable/FOOBAR".format(TEST_ID),
+        f"context/{TEST_ID}/environment-variable/FOOBAR",
         api_version="v2",
     )
     assert resp["message"] == "Environment variable deleted."

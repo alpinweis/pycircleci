@@ -87,7 +87,7 @@ class Api:
         Endpoint:
             GET ``/user/:user-id``
         """
-        endpoint = "user/{0}".format(user_id)
+        endpoint = f"user/{user_id}"
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -116,7 +116,7 @@ class Api:
         Endpoint:
             GET ``/user/repos/:vcs-type``
         """
-        endpoint = "/user/repos/{0}".format(vcs_type)
+        endpoint = f"/user/repos/{vcs_type}"
 
         resp = self._request_get_items(endpoint, api_version=API_VER_V1,  paginate=paginate, limit=limit)
         return resp
@@ -129,7 +129,7 @@ class Api:
         Endpoint:
             GET ``/project/:slug``
         """
-        endpoint = "project/{0}".format(slug)
+        endpoint = f"project/{slug}"
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -154,7 +154,7 @@ class Api:
             POST ``/project/:vcs-type/:username/:project/follow``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/follow".format(slug)
+        endpoint = f"project/{slug}/follow"
         resp = self._request(POST, endpoint)
         return resp
 
@@ -192,7 +192,7 @@ class Api:
         """
         valid_filters = ["completed", "successful", "failed", "running", None]
         if status_filter not in valid_filters:
-            raise CircleciError("Invalid status: {}. Valid values are: {}".format(status_filter, valid_filters))
+            raise CircleciError(f"Invalid status: {status_filter}. Valid values are: {valid_filters}")
 
         params = {"limit": limit, "offset": offset}
 
@@ -202,9 +202,9 @@ class Api:
             params["shallow"] = True
 
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}".format(slug)
+        endpoint = f"project/{slug}"
         if branch:
-            endpoint += "/tree/{0}".format(branch)
+            endpoint += f"/tree/{branch}"
         resp = self._request(GET, endpoint, params=params)
         return resp
 
@@ -244,7 +244,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/:build-num``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/{1}".format(slug, build_num)
+        endpoint = f"project/{slug}/{build_num}"
         resp = self._request(GET, endpoint)
         return resp
 
@@ -260,7 +260,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/:build-num/artifacts``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/{1}/artifacts".format(slug, build_num)
+        endpoint = f"project/{slug}/{build_num}/artifacts"
         resp = self._request(GET, endpoint)
         return resp
 
@@ -292,7 +292,7 @@ class Api:
         """
         valid_filters = ["completed", "successful", "failed"]
         if status_filter not in valid_filters:
-            raise CircleciError("Invalid status: {}. Valid values are: {}".format(status_filter, valid_filters))
+            raise CircleciError(f"Invalid status: {status_filter}. Valid values are: {valid_filters}")
 
         params = {"filter": status_filter}
 
@@ -300,7 +300,7 @@ class Api:
             params["branch"] = branch
 
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/latest/artifacts".format(slug)
+        endpoint = f"project/{slug}/latest/artifacts"
         resp = self._request(GET, endpoint, params=params)
         return resp
 
@@ -326,7 +326,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/:build-num/tests``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/{1}/tests".format(slug, build_num)
+        endpoint = f"project/{slug}/{build_num}/tests"
         resp = self._request(GET, endpoint)
         return resp
 
@@ -346,7 +346,7 @@ class Api:
         """
         action = "ssh" if ssh else "retry"
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/{1}/{2}".format(slug, build_num, action)
+        endpoint = f"project/{slug}/{build_num}/{action}"
         resp = self._request(POST, endpoint)
         return resp
 
@@ -362,7 +362,7 @@ class Api:
             POST ``/project/:vcs-type/:username/:project/:build-num/cancel``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/{1}/cancel".format(slug, build_num)
+        endpoint = f"project/{slug}/{build_num}/cancel"
         resp = self._request(POST, endpoint)
         return resp
 
@@ -378,7 +378,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/job/:job-number``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/job/{1}".format(slug, job_number)
+        endpoint = f"project/{slug}/job/{job_number}"
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -394,7 +394,7 @@ class Api:
             POST ``/project/:vcs-type/:username/:project/job/:job-number/cancel``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/job/{1}/cancel".format(slug, job_number)
+        endpoint = f"project/{slug}/job/{job_number}/cancel"
         resp = self._request(POST, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -415,7 +415,7 @@ class Api:
         params = {"branch": branch} if branch else None
 
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/pipeline".format(slug)
+        endpoint = f"project/{slug}/pipeline"
         if mine:
             endpoint += "/mine"
         resp = self._request_get_items(endpoint, params=params, paginate=paginate, limit=limit)
@@ -433,7 +433,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/pipeline/:pipeline-number``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/pipeline/{1}".format(slug, pipeline_num)
+        endpoint = f"project/{slug}/pipeline/{pipeline_num}"
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -486,7 +486,7 @@ class Api:
         Endpoint:
             GET ``/pipeline/:pipeline-id``
         """
-        endpoint = "pipeline/{0}".format(pipeline_id)
+        endpoint = f"pipeline/{pipeline_id}"
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -498,7 +498,7 @@ class Api:
         Endpoint:
             GET ``/pipeline/:pipeline-id/config``
         """
-        endpoint = "pipeline/{0}/config".format(pipeline_id)
+        endpoint = f"pipeline/{pipeline_id}/config"
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -512,7 +512,7 @@ class Api:
         Endpoint:
             GET ``/pipeline/:pipeline-id/workflow``
         """
-        endpoint = "pipeline/{0}/workflow".format(pipeline_id)
+        endpoint = f"pipeline/{pipeline_id}/workflow"
         resp = self._request_get_items(endpoint, paginate=paginate, limit=limit)
         return resp
 
@@ -524,7 +524,7 @@ class Api:
         Endpoint:
             GET ``/workflow/:workflow-id``
         """
-        endpoint = "workflow/{0}".format(workflow_id)
+        endpoint = f"workflow/{workflow_id}"
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -538,7 +538,7 @@ class Api:
         Endpoint:
             GET ``/workflow/:workflow-id/job``
         """
-        endpoint = "workflow/{0}/job".format(workflow_id)
+        endpoint = f"workflow/{workflow_id}/job"
         resp = self._request_get_items(endpoint, paginate=paginate, limit=limit)
         return resp
 
@@ -550,7 +550,7 @@ class Api:
         Endpoint:
             POST ``/workflow/:workflow-id/cancel``
         """
-        endpoint = "workflow/{0}/cancel".format(workflow_id)
+        endpoint = f"workflow/{workflow_id}/cancel"
         resp = self._request(POST, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -569,7 +569,7 @@ class Api:
         if jobs:
             data["jobs"] = jobs
 
-        endpoint = "workflow/{0}/rerun".format(workflow_id)
+        endpoint = f"workflow/{workflow_id}/rerun"
         resp = self._request(POST, endpoint, data=data, api_version=API_VER_V2)
         return resp
 
@@ -582,7 +582,7 @@ class Api:
         Endpoint:
             POST ``/workflow/:workflow-id/approve/:approval-request-id``
         """
-        endpoint = "workflow/{0}/approve/{1}".format(workflow_id, approval_request_id)
+        endpoint = f"workflow/{workflow_id}/approve/{approval_request_id}"
         resp = self._request(POST, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -598,7 +598,7 @@ class Api:
             POST ``/project/:vcs-type/:username/:project/:build-num/ssh-users``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/{1}/ssh-users".format(slug, build_num)
+        endpoint = f"project/{slug}/{build_num}/ssh-users"
         resp = self._request(POST, endpoint)
         return resp
 
@@ -644,7 +644,7 @@ class Api:
             data.update(params)
 
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/tree/{1}".format(slug, branch)
+        endpoint = f"project/{slug}/tree/{branch}"
         resp = self._request(POST, endpoint, data=data)
         return resp
 
@@ -686,7 +686,7 @@ class Api:
             data["parameters"] = params
 
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/pipeline".format(slug)
+        endpoint = f"project/{slug}/pipeline"
         resp = self._request(POST, endpoint, data=data, api_version=API_VER_V2)
         return resp
 
@@ -711,7 +711,7 @@ class Api:
         params = {"hostname": hostname, "private_key": ssh_key}
 
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/ssh-key".format(slug)
+        endpoint = f"project/{slug}/ssh-key"
         resp = self._request(POST, endpoint, data=params)
         return resp
 
@@ -726,7 +726,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/checkout-key``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/checkout-key".format(slug)
+        endpoint = f"project/{slug}/checkout-key"
         resp = self._request(GET, endpoint)
         return resp
 
@@ -744,12 +744,12 @@ class Api:
         """
         valid_types = ["deploy-key", "github-user-key"]
         if key_type not in valid_types:
-            raise CircleciError("Invalid key type: {}. Valid values are: {}".format(key_type, valid_types))
+            raise CircleciError(f"Invalid key type: {key_type}. Valid values are: {valid_types}")
 
         params = {"type": key_type}
 
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/checkout-key".format(slug)
+        endpoint = f"project/{slug}/checkout-key"
         resp = self._request(POST, endpoint, data=params)
         return resp
 
@@ -765,7 +765,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/checkout-key/:fingerprint``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/checkout-key/{1}".format(slug, fingerprint)
+        endpoint = f"project/{slug}/checkout-key/{fingerprint}"
         resp = self._request(GET, endpoint)
         return resp
 
@@ -781,7 +781,7 @@ class Api:
             DELETE ``/project/:vcs-type/:username/:project/checkout-key/:fingerprint``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/checkout-key/{1}".format(slug, fingerprint)
+        endpoint = f"project/{slug}/checkout-key/{fingerprint}"
         resp = self._request(DELETE, endpoint)
         return resp
 
@@ -796,7 +796,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/envvar``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/envvar".format(slug)
+        endpoint = f"project/{slug}/envvar"
         resp = self._request(GET, endpoint)
         return resp
 
@@ -815,7 +815,7 @@ class Api:
         data = {"name": name, "value": value}
 
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/envvar".format(slug)
+        endpoint = f"project/{slug}/envvar"
         resp = self._request(POST, endpoint, data=data)
         return resp
 
@@ -831,7 +831,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/envvar/:name``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/envvar/{1}".format(slug, name)
+        endpoint = f"project/{slug}/envvar/{name}"
         resp = self._request(GET, endpoint)
         return resp
 
@@ -847,7 +847,7 @@ class Api:
             DELETE ``/project/:vcs-type/:username/:project/envvar/:name``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/envvar/{1}".format(slug, name)
+        endpoint = f"project/{slug}/envvar/{name}"
         resp = self._request(DELETE, endpoint)
         return resp
 
@@ -883,7 +883,7 @@ class Api:
         Endpoint:
             GET ``/context/:context-id``
         """
-        endpoint = "context/{0}".format(context_id)
+        endpoint = f"context/{context_id}"
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -918,7 +918,7 @@ class Api:
         Endpoint:
             DELETE ``/context/:context-id``
         """
-        endpoint = "context/{0}".format(context_id)
+        endpoint = f"context/{context_id}"
         resp = self._request(DELETE, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -932,7 +932,7 @@ class Api:
         Endpoint:
             GET ``/context/:context-id/environment-variable``
         """
-        endpoint = "context/{0}/environment-variable".format(context_id)
+        endpoint = f"context/{context_id}/environment-variable"
         resp = self._request_get_items(endpoint, paginate=paginate, limit=limit)
         return resp
 
@@ -947,7 +947,7 @@ class Api:
             PUT ``/context/:context-id/environment-variable/:name``
         """
         data = {"value": value}
-        endpoint = "context/{0}/environment-variable/{1}".format(context_id, name)
+        endpoint = f"context/{context_id}/environment-variable/{name}"
         resp = self._request(PUT, endpoint, api_version=API_VER_V2, data=data)
         return resp
 
@@ -960,7 +960,7 @@ class Api:
         Endpoint:
             DELETE ``/context/:context-id/environment-variable/:name``
         """
-        endpoint = "context/{0}/environment-variable/{1}".format(context_id, name)
+        endpoint = f"context/{context_id}/environment-variable/{name}"
         resp = self._request(DELETE, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -975,7 +975,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/settings``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/settings".format(slug)
+        endpoint = f"project/{slug}/settings"
         resp = self._request(GET, endpoint)
         return resp
 
@@ -994,7 +994,7 @@ class Api:
             PUT ``/project/:vcs-type/:username/:project/settings``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/settings".format(slug)
+        endpoint = f"project/{slug}/settings"
         resp = self._request(PUT, endpoint, data=settings)
         return resp
 
@@ -1011,7 +1011,7 @@ class Api:
         params = {"workflow-name": workflow_name} if workflow_name else None
 
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "insights/{0}/branches".format(slug)
+        endpoint = f"insights/{slug}/branches"
         resp = self._request(GET, endpoint, params=params, api_version=API_VER_V2)
         return resp
 
@@ -1029,7 +1029,7 @@ class Api:
             GET ``/insights/:vcs-type/:username/:project/workflows``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "insights/{0}/workflows".format(slug)
+        endpoint = f"insights/{slug}/workflows"
         resp = self._request_get_items(endpoint, params=params, paginate=paginate, limit=limit)
         return resp
 
@@ -1048,7 +1048,7 @@ class Api:
             GET ``/insights/:vcs-type/:username/:project/workflows/:workflow-name``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "insights/{0}/workflows/{1}".format(slug, workflow_name)
+        endpoint = f"insights/{slug}/workflows/{workflow_name}"
         resp = self._request_get_items(endpoint, params=params, paginate=paginate, limit=limit)
         return resp
 
@@ -1065,7 +1065,7 @@ class Api:
             GET ``/insights/:vcs-type/:username/:project/workflows/:workflow-name/test-metrics``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "insights/{0}/workflows/{1}/test-metrics".format(slug, workflow_name)
+        endpoint = f"insights/{slug}/workflows/{workflow_name}/test-metrics"
         resp = self._request(GET, endpoint, params=params, api_version=API_VER_V2)
         return resp
 
@@ -1084,7 +1084,7 @@ class Api:
             GET ``/insights/:vcs-type/:username/:project/workflows/:workflow-name/jobs``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "insights/{0}/workflows/{1}/jobs".format(slug, workflow_name)
+        endpoint = f"insights/{slug}/workflows/{workflow_name}/jobs"
         resp = self._request_get_items(endpoint, params=params, paginate=paginate, limit=limit)
         return resp
 
@@ -1104,7 +1104,7 @@ class Api:
             GET ``/insights/:vcs-type/:username/:project/workflows/:workflow-name/jobs/:job-name``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "insights/{0}/workflows/{1}/jobs/{2}".format(slug, workflow_name, job_name)
+        endpoint = f"insights/{slug}/workflows/{workflow_name}/jobs/{job_name}"
         resp = self._request_get_items(endpoint, params=params, paginate=paginate, limit=limit)
         return resp
 
@@ -1119,7 +1119,7 @@ class Api:
             GET ``/project/:vcs-type/:username/:project/schedule``
         """
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/schedule".format(slug)
+        endpoint = f"project/{slug}/schedule"
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -1131,7 +1131,7 @@ class Api:
         Endpoint:
             GET ``/schedule/:schedule-id``
         """
-        endpoint = "schedule/{0}".format(schedule_id)
+        endpoint = f"schedule/{schedule_id}"
         resp = self._request(GET, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -1154,7 +1154,7 @@ class Api:
         data.update(settings)
 
         slug = self.project_slug(username, project, vcs_type)
-        endpoint = "project/{0}/schedule".format(slug)
+        endpoint = f"project/{slug}/schedule"
         resp = self._request(POST, endpoint, data=data, api_version=API_VER_V2)
         return resp
 
@@ -1170,7 +1170,7 @@ class Api:
         Endpoint:
             PATCH ``/schedule/:schedule-id``
         """
-        endpoint = "schedule/{0}".format(schedule_id)
+        endpoint = f"schedule/{schedule_id}"
         resp = self._request(PATCH, endpoint, data=settings, api_version=API_VER_V2)
         return resp
 
@@ -1182,7 +1182,7 @@ class Api:
         Endpoint:
             DELETE ``/schedule/:schedule-id``
         """
-        endpoint = "schedule/{0}".format(schedule_id)
+        endpoint = f"schedule/{schedule_id}"
         resp = self._request(DELETE, endpoint, api_version=API_VER_V2)
         return resp
 
@@ -1195,7 +1195,7 @@ class Api:
 
         :returns: string ``:vcs-type/:username/:reponame``
         """
-        slug = "{0}/{1}/{2}".format(vcs_type, username, reponame)
+        slug = f"{vcs_type}/{username}/{reponame}"
         return slug
 
     def owner_slug(self, username, vcs_type=GITHUB):
@@ -1206,7 +1206,7 @@ class Api:
 
         :returns: string ``:vcs-type/:username"``
         """
-        slug = "{0}/{1}".format(vcs_type, username)
+        slug = f"{vcs_type}/{username}"
         return slug
 
     def split_project_slug(self, slug):
@@ -1218,7 +1218,7 @@ class Api:
         """
         parts = slug.split("/")
         if len(parts) != 3:
-            raise CircleciError("Invalid project slug: '{}'".format(slug))
+            raise CircleciError(f"Invalid project slug: '{slug}'")
         return tuple(parts)
 
     def validate_api_version(self, api_version=None):
@@ -1229,7 +1229,7 @@ class Api:
             return API_VER_V1
         if ver in [API_VER_V2, "2", "2.0"]:
             return API_VER_V2
-        raise CircleciError("Invalid CircleCI API version: {}. Valid values are: {}".format(api_version, API_VERSIONS))
+        raise CircleciError(f"Invalid CircleCI API version: {api_version}. Valid values are: {API_VERSIONS}")
 
     def _request_session(
         self,
@@ -1281,7 +1281,7 @@ class Api:
         resp = None
 
         api_version = self.validate_api_version(api_version)
-        request_url = "{0}/{1}/{2}".format(self.url, api_version, endpoint)
+        request_url = f"{self.url}/{api_version}/{endpoint}"
 
         verb = verb.upper()
         if verb == GET:
@@ -1295,7 +1295,7 @@ class Api:
         elif verb == DELETE:
             resp = self._session.delete(request_url, params=params, auth=auth, headers=headers)
         else:
-            raise CircleciError("Invalid HTTP method: {}. Valid values are: {}".format(verb, HTTP_METHODS))
+            raise CircleciError(f"Invalid HTTP method: {verb}. Valid values are: {HTTP_METHODS}")
 
         self.last_response = resp
         resp.raise_for_status()
@@ -1360,7 +1360,7 @@ class Api:
         headers = {CIRCLE_API_KEY_HEADER: self.token}
         resp = self._session.get(url, headers=headers, stream=True)
 
-        path = "{0}/{1}".format(destdir, filename)
+        path = f"{destdir}/{filename}"
         with open(path, "wb") as f:
             for chunk in resp.iter_content(chunk_size=1024):
                 if chunk:
