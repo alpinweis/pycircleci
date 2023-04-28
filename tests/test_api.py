@@ -480,6 +480,14 @@ def test_get_project_branches(cci):
     assert "master" in resp["branches"]
 
 
+def test_get_flaky_tests(cci):
+    get_mock(cci, "get_flaky_tests_response.json")
+    resp = cci.get_flaky_tests("foo", "bar")
+    assert resp["total_flaky_tests"] == 2
+    assert len(resp["flaky_tests"]) == 2
+    assert resp["flaky_tests"][0]["times_flaked"] == 10
+
+
 def test_get_project_workflows_metrics_depaginated(cci):
     get_mock(cci, "get_project_workflows_metrics_response.json")
     resp = cci.get_project_workflows_metrics("foo", "bar")
