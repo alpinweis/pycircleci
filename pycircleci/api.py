@@ -1015,6 +1015,21 @@ class Api:
         resp = self._request(GET, endpoint, params=params, api_version=API_VER_V2)
         return resp
 
+    def get_flaky_tests(self, username, project, vcs_type=GITHUB):
+        """Get a list of flaky tests for a given project.
+
+        :param username: Org or user name.
+        :param project: Repo name.
+        :param vcs_type: VCS type (github, bitbucket). Defaults to ``github``.
+
+        Endpoint:
+            GET ``/insights/:vcs-type/:username/:project/flaky-tests``
+        """
+        slug = self.project_slug(username, project, vcs_type)
+        endpoint = f"insights/{slug}/flaky-tests"
+        resp = self._request(GET, endpoint, api_version=API_VER_V2)
+        return resp
+
     def get_project_workflows_metrics(self, username, project, params=None, vcs_type=GITHUB, paginate=False, limit=None):
         """Get summary metrics for a project's workflows.
 
