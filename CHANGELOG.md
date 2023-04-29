@@ -1,3 +1,7 @@
+### [0.7.0] - 2023-04-29
+* Add endpoint to get flaky tests (API v2)
+* Add build system info to comply with PEP-518
+
 ### [0.6.1] - 2023-02-04
 * Refactor string formatting to use f-strings
 
