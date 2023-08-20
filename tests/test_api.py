@@ -69,6 +69,7 @@ def test_get_user_repos(cci):
         api_version="v1.1",
         paginate=False,
         limit=None,
+        page=1,
     )
     assert len(resp) == 3
     assert resp[0]["vcs_type"] == "github"
@@ -326,6 +327,7 @@ def test_get_contexts_depaginated(cci):
         },
         paginate=False,
         limit=None,
+        page=1,
     )
     assert resp[0]["id"] == TEST_ID
     assert resp[0]["name"] == "context1"
@@ -343,6 +345,7 @@ def test_get_contexts_owner_id(cci):
         },
         paginate=False,
         limit=None,
+        page=1
     )
     assert resp[0]["name"] == "context1"
 
@@ -358,6 +361,7 @@ def test_get_contexts_owner_type(cci):
         },
         paginate=False,
         limit=None,
+        page=1,
     )
     assert resp[0]["name"] == "context1"
 
@@ -427,6 +431,7 @@ def test_get_context_envvars_depaginated(cci):
         f"context/{TEST_ID}/environment-variable",
         paginate=False,
         limit=None,
+        page=1,
     )
     assert resp[1]["variable"] == "FOOBAR"
     assert resp[2]["variable"] == "FOOBAR2"
